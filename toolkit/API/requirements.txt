@@ -1,0 +1,8 @@
+pyperseo
+pandas
+
+CARE-SM-Toolkit
+fastapi
+uvicorn
+rdflib
+requests
