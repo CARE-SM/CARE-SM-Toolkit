@@ -4,18 +4,19 @@ Birth_date:
     pid: patient_id
     value: birthdate
     startdate: birthdate
-    enddate: birthdate
+    # enddate: birthdate
     event_id: birthdate-context
-    protocol_id: protocol
     
 
-# Birthyear:
-#   cde: Birthyear
-#   columns:
-#     pid: patient_id
-#     value: birthyear
-#     startdate: birthdate
-#     enddate: birthdate
+Education:
+  cde: Questionnaire
+  columns:
+    pid: patient_id
+    value: education
+    activity: education-url
+    startdate: symptom-date
+    # enddate: symptom-date
+    event_id: symptom-date-context
     
 
 Sex:
@@ -24,10 +25,8 @@ Sex:
     pid: patient_id
     valueIRI: sex
     startdate: birthdate
-    enddate: birthdate
+    # enddate: birthdate
     event_id: birthdate-context
-    protocol_id: protocol
-    
 
 
 Status:
@@ -36,9 +35,8 @@ Status:
     pid: patient_id
     valueIRI: status
     startdate: status-date
-    enddate: status-date
+    # enddate: status-date
     event_id: status-date-context
-    protocol_id: protocol
     
 
 Date_of_death:
@@ -47,9 +45,8 @@ Date_of_death:
     pid: patient_id
     value: deathdate
     startdate: status-date
-    enddate: status-date
+    # enddate: status-date
     event_id: status-date-context
-    protocol_id: protocol
     
 
 Care_pathway:
@@ -58,9 +55,8 @@ Care_pathway:
     pid: patient_id
     value: first-confirmed-visit
     startdate: first-confirmed-visit
-    enddate: first-confirmed-visit
+    # enddate: first-confirmed-visit
     event_id: first-confirmed-visit-context
-    protocol_id: protocol
    
 
 symptomHematuria:
@@ -69,9 +65,8 @@ symptomHematuria:
     pid: patient_id
     valueIRI: symptom-hematuria
     startdate: symptom-date
-    enddate: symptom-date
+    # enddate: symptom-date
     event_id: symptom-date-context
-    protocol_id: protocol
     
 
 symptomVasculitis:
@@ -80,9 +75,8 @@ symptomVasculitis:
     pid: patient_id
     valueIRI: symptom-vasculitis
     startdate: symptom-date
-    enddate: symptom-date
+    # enddate: symptom-date
     event_id: symptom-date-context
-    protocol_id: protocol
 
 
 
@@ -92,20 +86,19 @@ symptomCystinuria:
     pid: patient_id
     valueIRI: symptom-cystinuria
     startdate: symptom-date
-    enddate: symptom-date
+    # enddate: symptom-date
     event_id: symptom-date-context
-    protocol_id: protocol
 
     
 symptomOnset:
-  cde: Symptoms_onset
+  cde: Questionnaire
   columns:
     pid: patient_id
     value: date-onset
+    activity: onset-url
     startdate: symptom-date
-    enddate: symptom-date
+    # enddate: symptom-date
     event_id: symptom-date-context
-    protocol_id: protocol
    
 
 
@@ -115,9 +108,8 @@ Consent_clinical:
     pid: patient_id
     value: consent-used
     startdate: consent-date
-    enddate: consent-date
+    # enddate: consent-date
     event_id: consent-date-context
-    protocol_id: protocol
   
 
 Consent_research:
@@ -126,9 +118,8 @@ Consent_research:
     pid: patient_id
     value: consent-reseach
     startdate: consent-date
-    enddate: consent-date
+    # enddate: consent-date
     event_id: consent-date-context
-    protocol_id: protocol
     
 
 Genotype_OMIM:
@@ -137,11 +128,33 @@ Genotype_OMIM:
     pid: patient_id
     valueIRI: variant-id
     value: variant-value
-    target_type: omim-id
+    target: omim-id
     startdate: consent-date
-    enddate: consent-date
+    # enddate: consent-date
     event_id: consent-date-context
-    protocol_id: protocol
+
+
+Genotype_zygosity:
+  cde: Zygosity
+  columns:
+    pid: patient_id
+    valueIRI: zygosity
+    target: variant-id
+    startdate: consent-date
+    # enddate: consent-date
+    event_id: consent-date-context
+
+
+Genotype_aminoacid:
+  cde: Aminoacid
+  columns:
+    pid: patient_id
+    valueIRI: protein
+    value: aminoacid-pos
+    target: aminoacid
+    startdate: consent-date
+    # enddate: consent-date
+    event_id: consent-date-context
     
 
 Disability:
@@ -149,11 +162,10 @@ Disability:
   columns:
     pid: patient_id
     value: disability-score
-    activity_type : disability-type
+    activity: disability-type
     startdate: symptom-date
-    enddate: symptom-date
+    # enddate: symptom-date
     event_id: symptom-date-context
-    protocol_id: protocol
     
 
 Biobank:
@@ -162,23 +174,21 @@ Biobank:
     pid: patient_id
     agent_id: biobank-id
     startdate: consent-date
-    enddate: consent-date
+    # enddate: consent-date
     event_id: consent-date-context
-    protocol_id: protocol
     
 
 Lab_homocysteine:
   cde: Lab_measurement
   columns:
     pid: patient_id
-    input_type: input-lab
+    input: input-lab
     value: lab-value
-    target_type: target-lab
-    unit_type: unit-lab
+    target: target-lab
+    unit: unit-lab
     startdate: lab-date
-    enddate: lab-date
+    # enddate: lab-date
     event_id: lab-date-context
-    protocol_id: protocol
 
 Diagnosis-acidemia:
   cde: Diagnosis
@@ -186,9 +196,8 @@ Diagnosis-acidemia:
     pid: patient_id
     valueIRI: diagnosis-homocisteruria
     startdate: diagnosis-date
-    enddate: diagnosis-date
+    # enddate: diagnosis-date
     event_id: diagnosis-date-context    
-    protocol_id: protocol
 
 Diagnosis-other:
   cde: Diagnosis
@@ -196,9 +205,8 @@ Diagnosis-other:
     pid: patient_id
     valueIRI: diagnosis-other
     startdate: diagnosis-date
-    enddate: diagnosis-date
+    # enddate: diagnosis-date
     event_id: diagnosis-date-context    
-    protocol_id: protocol
     
 
 UltrasoundKidney:
@@ -206,11 +214,11 @@ UltrasoundKidney:
   columns:
     pid: patient_id
     valueIRI: imaging-id
-    activity_type: imaging-process
+    activity: imaging-process
+    target: imaging-target
     startdate: imaging-date
-    enddate: imaging-date
+    # enddate: imaging-date
     event_id: imaging-date-context
-    protocol_id: protocol
     
 
 BMI:
@@ -220,35 +228,29 @@ BMI:
     valueIRI: bmi
     value: bmi-value
     startdate: body-measurement-date
-    enddate: body-measurement-date
+    # enddate: body-measurement-date
     event_id: body-measurement-date-context
-    protocol_id: protocol
 
 Biopsy:
   cde: Surgery
   columns:
     pid: patient_id
-    activity_type: skin-biopsy
-    target_type: target-biopsy
+    activity: skin-biopsy
+    target: target-biopsy
     startdate: biopsy-date
-    enddate: biopsy-date
+    # enddate: biopsy-date
     event_id: biopsy-date-context
-    protocol_id: protocol
 
 Med:
   cde: Medication
   columns:
     pid: patient_id
     value: dose_value
-    unit_type: unit_type
+    unit: unit_type
     frequency_type: freq_type
     frequency_value: frequency_value
-    route_type: route
+    route: route
     substance_id: drug_used
     startdate: medication-date
-    enddate: medication-date
+    # enddate: medication-date
     event_id: medication-date-context
-    protocol_id: protocol
-
-
-

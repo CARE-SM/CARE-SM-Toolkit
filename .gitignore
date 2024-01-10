@@ -4,3 +4,4 @@ dist
 CARE_SM_Toolkit.egg-info
 toolkit/API/data/__pycache__
 toolkit/trial.py
+.pytest_cache
