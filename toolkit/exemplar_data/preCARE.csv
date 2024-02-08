@@ -1,8 +1,8 @@
-model,pid,event_id,value,age,value_datatype,valueIRI,activity,intensity,unit,input,target,frequency_type,frequency_value,agent_id,route,startdate,enddate,comments
+model,pid,event_id,value,age,value_datatype,valueIRI,activity,intensity,unit,input,target,frequency_type,frequency_value,agent,route,startdate,enddate,comments
 Birthdate,30056,12345,1984-10-12,,,,,,,,,,,,,1994-12-25,,
+Birthyear,30056,12345,1984,,,,,,,,,,,,,,,
 Deathdate,30056,12345,2021-05-12,37.4,,,,,,,,,,,,2021-05-12,,
 First_visit,30056,12345,1994-12-25,,,,,,,,,,,,,1994-12-25,,
-First_visit,30056,12345,29.5,29.5,,,,,,,,,,,,,,
 Status,30056,12345,Dead,,,http://semanticscience.org/resource/SIO_010059,,,,,,,,,,2021-05-12,,
 Sex,30056,12345,Male,,,http://purl.obolibrary.org/obo/NCIT_C20197,,,,,,,,,,1994-12-25,,
 Diagnosis,30056,45678,Pediatric systemic lupus erythematosus,,,http://www.orpha.net/ORDO/Orphanet_93552,,,,,,,,,,2006-01-19,,

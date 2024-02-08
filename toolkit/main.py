@@ -1,5 +1,6 @@
 import pandas as pd
 from perseo.main import milisec
+import sys
 
 class Toolkit:
 
@@ -20,7 +21,7 @@ class Toolkit:
       
     ## Check the status of the columns
     def check_status_column_names(self, data):
-        column_names = ["model","pid","event_id","value","age","value_datatype","valueIRI","activity","unit","input","target","intensity","protocol_id","frequency_type","frequency_value","agent_id","route","startdate","enddate","comments"]
+        column_names = ["model","pid","event_id","value","age","value_datatype","valueIRI","activity","unit","input","target","intensity","protocol_id","frequency_type","frequency_value","agent","route","startdate","enddate","comments"]
         for name in column_names:
             if name not in data.columns:
                 return False
@@ -35,7 +36,8 @@ class Toolkit:
         
     ## Add ontological columns
     def add_columns_from_template(self,data):
-        
+        print("Transforming and Validating....")
+
         data = data.where(pd.notnull(data), None)
 
         temp = Template.template_model
@@ -136,7 +138,7 @@ class Toolkit:
 
             ## ValueIRI/value edition
             
-            if row["model"] in ["Sex","Status","Diagnosis","Symptom","Clinical_trial"]:
+            if row["model"] in ["Sex","Status","Diagnosis","Symptom","Clinical_trial", "Body_measurement"]:
                 data.at[index, "attribute_type"] = data["valueIRI"][index]
 
             if row["model"] in ["Genetic","Imaging"]:
@@ -160,6 +162,12 @@ class Toolkit:
             
             if row["model"] in ["Aminoacid","Lab_measurement","Biobank","Surgical","Imaging"]:
                 data.at[index, "target_type"] = data["target"][index]
+                
+            if row["model"] in ["Biobank","Clinical_trial"]:
+                data.at[index, "agent_id"] = data["agent"][index]
+                
+            if row["model"] in ["Medication","Surgery"]:
+                data.at[index, "substance_id"] = data["agent"][index]
 
             data = data.where(pd.notnull(data), None)
 
@@ -176,7 +184,7 @@ class Toolkit:
             if type(row['enddate']) == float or row['enddate'] == None: #TODO work on nan values to filter them better
                 data.at[index, 'enddate'] = row['startdate']
                 
-            print(data["enddate"][index])
+            # print(data["enddate"][index])
 
         return data
 
@@ -193,6 +201,7 @@ class Toolkit:
         del data["value"]
         del data["valueIRI"]
         del data["target"]
+        del data["agent"]
 
         return data
     
@@ -239,7 +248,7 @@ class Toolkit:
         if table_with_uniqid is not None:
             print("CSV data transformation done.")
         else:
-            print("CSV data transformation failed. Something went wrong during transformation.")
+            sys.exit("CSV file quiality control failed. Please check the columns names, every required column is not present")
 
         return table_with_uniqid
       
@@ -252,11 +261,11 @@ class Toolkit:
         else:
             print("CSV file import failed. Please check the file path and format.")
 
-        # columns_names_conformation = self.check_status_column_names(imported_file)
-        # if columns_names_conformation is not None:
-        #     print("Every CSV columns present.")
-        # else:
-        #     print("CSV file quiality control failed. Please check the columns names, every required column is not present")
+        columns_names_conformation = self.check_status_column_names(imported_file)
+        if columns_names_conformation is not None:
+            print("Every CSV columns present.")
+        else:
+            sys.exit("CSV file quiality control failed. Please check the columns names, every required column is not present")
 
         # table_without_extra_head= self.check_for_duplicated_titles_among_row(columns_names_conformation)
         # if table_without_extra_head is not None:
@@ -317,6 +326,42 @@ class Template:
       value_string = None,
       value_float = None,
       value_datatype = "xsd:date",
+      age = None,
+      protocol_id = None,
+      startdate = None,
+      enddate = None,
+      uniqid = None,
+
+    ),
+    
+    Birthyear = dict(
+      pid = None,
+      event_id = None,
+      comments = None,
+      process_type = "http://purl.obolibrary.org/obo/NCIT_C142470",
+      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856",
+      attribute_type = "http://purl.obolibrary.org/obo/NCIT_C83164",
+      attribute_type2 = None,
+      agent_id = None,
+      substance_id = None,
+      input = None,
+      input_id = None,
+      target_type = None,
+      target_id = None,
+      output_id = None,
+      activity = None,
+      intensity = None,
+      unit = None,
+      agent_type = None,
+      frequency_type = None,
+      frequency_value = None,
+      route = None,
+      concentration_value = None,
+      value_date = None,
+      value_integer = None,
+      value_string = None,
+      value_float = None,
+      value_datatype = "xsd:integer",
       age = None,
       protocol_id = None,
       startdate = None,
@@ -783,7 +828,7 @@ class Template:
       process_type = "http://purl.obolibrary.org/obo/NCIT_C142470" ,
       output_type = "http://purl.obolibrary.org/obo/NCIT_C70856" ,
       attribute_type = None,
-      attribute_type2 = None,
+      attribute_type2 = "http://purl.obolibrary.org/obo/NCIT_C25447" ,
       agent_id = None,
       substance_id = None,
       input = None,

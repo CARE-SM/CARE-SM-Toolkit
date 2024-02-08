@@ -7,6 +7,14 @@ Birth_date:
     # enddate: birthdate
     event_id: birthdate-context
     
+Birth_year:
+  cde: Birthyear
+  columns:
+    pid: patient_id
+    value: birthyear
+    # startdate: birthdate
+    # enddate: birthdate
+    event_id: birthdate-context
 
 Education:
   cde: Questionnaire
@@ -172,7 +180,7 @@ Biobank:
   cde: Biobank
   columns:
     pid: patient_id
-    agent_id: biobank-id
+    agent: biobank-id
     startdate: consent-date
     # enddate: consent-date
     event_id: consent-date-context
@@ -250,7 +258,7 @@ Med:
     frequency_type: freq_type
     frequency_value: frequency_value
     route: route
-    substance_id: drug_used
+    agent: drug_used
     startdate: medication-date
     # enddate: medication-date
     event_id: medication-date-context
