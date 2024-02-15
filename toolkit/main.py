@@ -160,7 +160,7 @@ class Toolkit:
             if row["model"] in ["Zygosity","Genetic"]:
                 data.at[index, "target_id"] = data["target"][index]
             
-            if row["model"] in ["Aminoacid","Lab_measurement","Biobank","Surgical","Imaging"]:
+            if row["model"] in ["Aminoacid","Lab_measurement","Biobank","Surgical","Imaging","Questionnaire"]:
                 data.at[index, "target_type"] = data["target"][index]
                 
             if row["model"] in ["Biobank","Clinical_trial"]:

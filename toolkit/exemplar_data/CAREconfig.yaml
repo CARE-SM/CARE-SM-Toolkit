@@ -104,6 +104,8 @@ symptomOnset:
     pid: patient_id
     value: date-onset
     activity: onset-url
+    target: symptom-cystinuria
+    value_datatype: datatype
     startdate: symptom-date
     # enddate: symptom-date
     event_id: symptom-date-context
