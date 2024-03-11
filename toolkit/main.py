@@ -1,6 +1,7 @@
 import pandas as pd
 from perseo.main import milisec
 import sys
+from .template import Template
 
 class Toolkit:
 
@@ -21,18 +22,16 @@ class Toolkit:
       
     ## Check the status of the columns
     def check_status_column_names(self, data):
-        column_names = ["model","pid","event_id","value","age","value_datatype","valueIRI","activity","unit","input","target","intensity","protocol_id","frequency_type","frequency_value","agent","route","startdate","enddate","comments"]
+        column_names = ["model", "pid", "event_id", "value", "age", "value_datatype", "valueIRI", "activity", "unit", "input", "target", "protocol_id", "frequency_type", "frequency_value", "agent", "startdate", "enddate", "comments"]
+
+        check_column_in_data = set(data.columns).issubset(column_names)
+        if not check_column_in_data:
+            sys.exit("Your CSV template contains column names that are not part of the accepted for the Toolkit. Accepted column names: {}".format(column_names))
+            
         for name in column_names:
             if name not in data.columns:
-                return False
+                data[name] = None
         return data
-
-    def check_for_duplicated_titles_among_row(self, data):
-        count = 0
-        for value in data["model"]:
-            if value == "model":
-                count += 1
-        return count > 0
         
     ## Add ontological columns
     def add_columns_from_template(self,data):
@@ -71,8 +70,7 @@ class Toolkit:
 
         final_df = final_df.where(pd.notnull(final_df), None)
         return final_df
-      
-      
+
       
     def transform_shape_based_on_config(self, configuration, data):
         
@@ -123,7 +121,7 @@ class Toolkit:
             
             data = data.where(pd.notnull(data), None)
             
-            # Based on the value_datatype, add value
+            # value edition; based on the value_datatype
             if row["value_datatype"] == "xsd:string":
                 data.at[index, "value_string"] = data["value"][index] #.astype('str')
 
@@ -136,40 +134,59 @@ class Toolkit:
             if row["value_datatype"] == "xsd:date":
                 data.at[index, "value_date"] = data["value"][index] #.astype({'date': 'datetime64[ns]'})
 
-            ## ValueIRI/value edition
-            
-            if row["model"] in ["Sex","Status","Diagnosis","Symptom","Clinical_trial", "Body_measurement"]:
+            if row["model"] in ["Medication"]:
+                data.at[index, "concentration_value"] = data["value"][index]
+
+            ## ValueIRI edition
+            if row["model"] in ["Sex","Status","Diagnosis","Phenotype","Clinical_trial","Body_measurement"]:
                 data.at[index, "attribute_type"] = data["valueIRI"][index]
 
-            if row["model"] in ["Genetic","Imaging"]:
+            if row["model"] in ["Genotype","Protein","Imaging"]:
                 data.at[index, "output_id"] = data["valueIRI"][index]
                 
             if row["model"] in ["Zygosity"]:
                 data.at[index, "output_type"] = data["valueIRI"][index]
                 
-            if row["model"] in ["Aminoacid"]:
-                data.at[index, "input_id"] = data["valueIRI"][index]
-                
-            if row["model"] in ["Medication"]:
-                data.at[index, "concentration_value"] = data["value"][index]
-                
             ## Target edition
             data = data.where(pd.notnull(data), None)
-
             
-            if row["model"] in ["Zygosity","Genetic"]:
+            if row["model"] in ["Zygosity","Genotype", "Protein"]:
                 data.at[index, "target_id"] = data["target"][index]
             
-            if row["model"] in ["Aminoacid","Lab_measurement","Biobank","Surgical","Imaging","Questionnaire"]:
+            if row["model"] in ["Symptoms_onset","Lab_measurement","Biobank","Surgical","Imaging","Questionnaire"]:
                 data.at[index, "target_type"] = data["target"][index]
                 
+            ## Input edition 
+            # Tecnically is not required becuase its not needed to separate input_id and input_type
+            # Just in case in the future is required to split
+            if row["model"] in ["Genotype","Zygosity","Protein","Lab_measurement","Imaging"]:
+                data.at[index, "input_type"] = data["input"][index]              
+            
+            ## Agent edition
             if row["model"] in ["Biobank","Clinical_trial"]:
                 data.at[index, "agent_id"] = data["agent"][index]
-                
+            
+            ## Substance edition
             if row["model"] in ["Medication","Surgery"]:
                 data.at[index, "substance_id"] = data["agent"][index]
-
+                   
             data = data.where(pd.notnull(data), None)
+            
+            ## Activity edition
+            if row["model"] in ["Disability","Lab_measurement", "Imaging", "Surgery", "Genotype", "Zygosity", "Protein"]:
+                data.at[index, "specific_process_type"] = data["activity"][index]
+            
+            if row["model"] in ["Medication"]:
+                data.at[index, "activity_type"] = data["activity"][index]
+                
+            data = data.where(pd.notnull(data), None)
+
+            ## Unit edition
+            if row["model"] in ["Body_measurement","Lab_measurement"]:
+                data.at[index, "unit_type"] = data["unit"][index]
+                
+            if row["model"] in ["Medication"]:
+                data.at[index, "concentration_unit_type"] = data["unit"][index]
 
         return data     
 
@@ -184,24 +201,22 @@ class Toolkit:
             if type(row['enddate']) == float or row['enddate'] == None: #TODO work on nan values to filter them better
                 data.at[index, 'enddate'] = row['startdate']
                 
-            # print(data["enddate"][index])
-
         return data
 
     ## Clean rows with no value
     def clean_empty_rows(self, data):
 
         for row_final in data.iterrows():
-            if row_final[1]["value"] == None and row_final[1]["valueIRI"] == None and row_final[1]["activity"] == None and row_final[1]["target"] == None and row_final[1]["model"] not in ["Biobank", "Consent_used", "Consent_contacted"]:
+            if row_final[1]["value"] == None and row_final[1]["valueIRI"] == None and row_final[1]["activity"] == None and row_final[1]["agent"] == None and row_final[1]["target"] == None and row_final[1]["model"] not in ["Biobank", "Consent_used", "Consent_contacted"]:
                 data = data.drop(row_final[0])
         return data
     
     def delete_extra_columns(self, data):
-
-        del data["value"]
-        del data["valueIRI"]
-        del data["target"]
-        del data["agent"]
+        columns_to_delete = ["value", "valueIRI", "target", "agent", "input", "activity", "unit"]
+        
+        for column in columns_to_delete:
+            if column in data.columns:
+                del data[column]
 
         return data
     
@@ -216,16 +231,13 @@ class Toolkit:
     def whole_quality_control(self,input_data):
 
         imported_file = self.import_your_data_from_csv(input_data)
+        
         if imported_file is not None:
             print("CSV file imported successfully.")
         else:
             print("CSV file import failed. Please check the file path and format.")
 
         columns_names_conformation = self.check_status_column_names(imported_file)
-        if columns_names_conformation is not None:
-            print("Every CSV columns present.")
-        else:
-            print("CSV file quality control failed. Please check the columns names, every required column is not present")
 
         # table_without_extra_head = self.check_for_duplicated_titles_among_row(columns_names_conformation)
         # if table_without_extra_head is not None:
@@ -233,7 +245,7 @@ class Toolkit:
         # else:
         #     print("CSV file quiality control failed. Please check the data content, looks like their multiple head rows with title in you CSV.")
 
-        table_with_template_addition = self.add_columns_from_template(imported_file)
+        table_with_template_addition = self.add_columns_from_template(columns_names_conformation)
 
         table_with_value_edited = self.value_edition(table_with_template_addition)
 
@@ -292,746 +304,3 @@ class Toolkit:
             print("CSV data transformation failed. Something went wrong during transformation.")
 
         return table_with_uniqid
-    
-   
-class Template:
-
-  template_model = dict(
-
-    Birthdate = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C142470",
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856",
-      attribute_type = "http://purl.obolibrary.org/obo/NCIT_C68615",
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:date",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-
-    ),
-    
-    Birthyear = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C142470",
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856",
-      attribute_type = "http://purl.obolibrary.org/obo/NCIT_C83164",
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:integer",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-
-    ),
-
-    Deathdate = dict( 
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C142470",
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856",
-      attribute_type = "http://purl.obolibrary.org/obo/NCIT_C70810",
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,    
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:date",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    First_visit = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C142470",
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856",
-      attribute_type = "http://purl.obolibrary.org/obo/NCIT_C164021",
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:date",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Sex = dict( 
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C142470",
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856",
-      attribute_type = None,
-      attribute_type2 = "http://purl.obolibrary.org/obo/NCIT_C28421",
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Status = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C142470",
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856",
-      attribute_type = None,
-      attribute_type2 = "http://purl.obolibrary.org/obo/NCIT_C166244",
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Diagnosis = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C18020",
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856",
-      attribute_type = None,
-      attribute_type2 = "http://purl.obolibrary.org/obo/NCIT_C2991",
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Symptom = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C18020",
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856",
-      attribute_type = None,
-      attribute_type2 = "http://purl.obolibrary.org/obo/NCIT_C100104",
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Genetic = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type= "http://purl.obolibrary.org/obo/NCIT_C15709",
-      output_type= "http://purl.obolibrary.org/obo/NCIT_C45766",
-      attribute_type= None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = "http://purl.obolibrary.org/obo/NCIT_C16612",
-      target_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string",  
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-    
-    Zygosity = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type= "http://purl.obolibrary.org/obo/NCIT_C15709",
-      output_type= None,
-      attribute_type= None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = "http://purl.obolibrary.org/obo/NCIT_C45766",
-      target_id = None,
-      activity = "http://purl.obolibrary.org/obo/NCIT_C181350",
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string",  
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-    
-    Aminoacid = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type= "http://purl.obolibrary.org/obo/NCIT_C15709",
-      output_type= "http://purl.obolibrary.org/obo/NCIT_C164371",
-      attribute_type= None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = "http://purl.obolibrary.org/obo/NCIT_C17021",
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:integer",  
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Consent_contacted = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type= "http://purl.obolibrary.org/obo/OBI_0000810",
-      output_type = "http://purl.obolibrary.org/obo/OBIB_0000488",
-      attribute_type= None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Consent_used = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type= "http://purl.obolibrary.org/obo/OBI_0000810",
-      output_type = "http://purl.obolibrary.org/obo/DUO_0000001",
-      attribute_type= None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Biobank = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type= "http://purl.obolibrary.org/obo/OMIABIS_0000061",
-      output_type= "http://purl.obolibrary.org/obo/NCIT_C115570",
-      attribute_type= None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = "http://purl.obolibrary.org/obo/OBIB_0000616",
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Questionnaire = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C91102",
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856",
-      attribute_type = None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:float",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Body_measurement = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C142470" ,
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856" ,
-      attribute_type = None,
-      attribute_type2 = "http://purl.obolibrary.org/obo/NCIT_C25447" ,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:float" ,
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-
-    Lab_measurement = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C25294" ,
-      output_type = "http://purl.obolibrary.org/obo/NCIT_C70856" ,
-      attribute_type = None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype= "xsd:float" ,
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Imaging = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C17369",
-      output_type =  "http://purl.obolibrary.org/obo/NCIT_C81289",
-      attribute_type = None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = None,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string" ,
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Surgery = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C15329",
-      output_type = None,
-      attribute_type = None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = "http://purl.obolibrary.org/obo/NCIT_C177929",
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string" ,
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-    ),
-
-    Clinical_trial = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C71104" ,
-      output_type=  "http://purl.obolibrary.org/obo/NCIT_C115575" ,
-      attribute_type = None,
-      attribute_type2 = "http://purl.obolibrary.org/obo/NCIT_C2991",
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = "http://purl.obolibrary.org/obo/NCIT_C16696" ,
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:string",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-
-
-    ),
-
-    Medication = dict(
-      pid = None,
-      event_id = None,
-      comments = None,
-      process_type = "http://purl.obolibrary.org/obo/NCIT_C70962",
-      output_type = None ,
-      attribute_type = None,
-      attribute_type2 = None,
-      agent_id = None,
-      substance_id = None,
-      input = None,
-      input_id = None,
-      target_type = None,
-      target_id = None,
-      output_id = None,
-      activity = None,
-      intensity = None,
-      unit = None,
-      agent_type = "http://purl.obolibrary.org/obo/NCIT_C177929",
-      frequency_type = None,
-      frequency_value = None,
-      route = None,
-      concentration_value = None,
-      value_date = None,
-      value_integer = None,
-      value_string = None,
-      value_float = None,
-      value_datatype = "xsd:float",
-      age = None,
-      protocol_id = None,
-      startdate = None,
-      enddate = None,
-      uniqid = None,
-
-    )
-  )
