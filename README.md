@@ -1,4 +1,4 @@
-# CARE-SM-Toolkit
+# CARE-SM Toolkit
 
 **CSV datatable toolkit for CARE semantic model implementation**
 
@@ -18,7 +18,7 @@ The toolkit serves as a module dedicated to performing a curation step prior to 
 
 * Creation of the column called `uniqid` that assigns a unique identifier to each observation. This prevents the RDF instances from overlapping with one another, ensuring their distinctiveness and integrity.
 
-## Dockerized implementation:
+## Dockerized implementation
 
 There's a Docker-based implementation controlled via API (using FastAPI) that you can use for mounting this data transformation step as a part of your CARE-SM implementation. Use our docker compose to control your Docker image, ports where its located and volumes in order to pass your CSV-based patient data:
 
@@ -27,14 +27,16 @@ version: "3.3"
 
 services:
   api:
-    image: pabloalarconm/care-sm-toolkit:0.0.1 # check for latest version
+    image: pabloalarconm/care-sm-toolkit:latest # check for latest version
     ports:
       - "8000:8000"
     volumes:
       - ./data:/code/data
 ```
 
-## Local implementation:
+## Local implementation
+
+If you are not interested on running Docker image, you can install the Pyhton module for local implementation.
 
 ###  Installation:
 
@@ -53,6 +55,6 @@ from main import Toolkit
 
 test= Toolkit()
 
-test_done = test.whole_quality_control(input_data="etoolkit/exemplar_data/preCARE.csv")
+test_done = test.whole_quality_control(input_data="toolkit/exemplar_data/preCARE.csv")
 test_done.to_csv ("toolkit/exemplar_data/CARE.csv", index = False, header=True)
 ```
