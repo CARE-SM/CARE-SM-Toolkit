@@ -68,7 +68,7 @@ Sex:
    
 
 symptomHematuria:
-  cde: Symptom
+  cde: Phenotype
   columns:
     pid: patient_id
     valueIRI: symptom-hematuria
@@ -78,7 +78,7 @@ symptomHematuria:
     
 
 symptomVasculitis:
-  cde: Symptom
+  cde: Phenotype
   columns:
     pid: patient_id
     valueIRI: symptom-vasculitis
@@ -89,7 +89,7 @@ symptomVasculitis:
 
 
 symptomCystinuria:
-  cde: Symptom
+  cde: Phenoype
   columns:
     pid: patient_id
     valueIRI: symptom-cystinuria
@@ -99,11 +99,10 @@ symptomCystinuria:
 
     
 symptomOnset:
-  cde: Questionnaire
+  cde: Symptoms_onset
   columns:
     pid: patient_id
     value: date-onset
-    activity: onset-url
     target: symptom-cystinuria
     value_datatype: datatype
     startdate: symptom-date
@@ -133,12 +132,11 @@ symptomOnset:
     
 
 Genotype_OMIM:
-  cde: Genetic
+  cde: Genotype
   columns:
     pid: patient_id
-    valueIRI: variant-id
+    target: variant-id
     value: variant-value
-    target: omim-id
     startdate: consent-date
     # enddate: consent-date
     event_id: consent-date-context

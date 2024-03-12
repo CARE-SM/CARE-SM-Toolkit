@@ -290,7 +290,7 @@ class Template:
         value_integer = None,
         value_string = None,
         value_float = None,
-        value_datatype = "xsd:string",
+        value_datatype = "xsd:integer",
         comments = None,
         startdate = None,
         enddate = None,

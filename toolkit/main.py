@@ -207,7 +207,7 @@ class Toolkit:
     def clean_empty_rows(self, data):
 
         for row_final in data.iterrows():
-            if row_final[1]["value"] == None and row_final[1]["valueIRI"] == None and row_final[1]["activity"] == None and row_final[1]["agent"] == None and row_final[1]["target"] == None and row_final[1]["model"] not in ["Biobank", "Consent_used", "Consent_contacted"]:
+            if row_final[1]["value"] == None and row_final[1]["valueIRI"] == None and row_final[1]["activity"] == None and row_final[1]["target"] == None and row_final[1]["model"] not in ["Biobank", "Consent_used", "Consent_contacted"]:
                 data = data.drop(row_final[0])
         return data
     
@@ -239,12 +239,6 @@ class Toolkit:
 
         columns_names_conformation = self.check_status_column_names(imported_file)
 
-        # table_without_extra_head = self.check_for_duplicated_titles_among_row(columns_names_conformation)
-        # if table_without_extra_head is not None:
-        #     print("CSV without title duplcations done.")
-        # else:
-        #     print("CSV file quiality control failed. Please check the data content, looks like their multiple head rows with title in you CSV.")
-
         table_with_template_addition = self.add_columns_from_template(columns_names_conformation)
 
         table_with_value_edited = self.value_edition(table_with_template_addition)
@@ -273,22 +267,15 @@ class Toolkit:
         else:
             print("CSV file import failed. Please check the file path and format.")
 
-        columns_names_conformation = self.check_status_column_names(imported_file)
-        if columns_names_conformation is not None:
-            print("Every CSV columns present.")
-        else:
-            sys.exit("CSV file quiality control failed. Please check the columns names, every required column is not present")
-
-        # table_without_extra_head= self.check_for_duplicated_titles_among_row(columns_names_conformation)
-        # if table_without_extra_head is not None:
-        #     print("CSV without title duplcations done.")
+        # columns_names_conformation = self.check_status_column_names(imported_file)
+        # if columns_names_conformation is not None:
+        #     print("Every CSV columns present.")
         # else:
-        #     print("CSV file quiality control failed. Please check the data content, looks like their multiple head rows with title in you CSV.")
+        #     sys.exit("CSV file quiality control failed. Please check the columns names, every required column is not present")
 
         table_with_template_addition = self.transform_shape_based_on_config(configuration=configuration, data=imported_file)
 
         table_with_value_edited = self.value_edition(table_with_template_addition)
-    
 
         table_with_time_corrected = self.time_edition(table_with_value_edited)
 
