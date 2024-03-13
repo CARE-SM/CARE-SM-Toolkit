@@ -125,10 +125,10 @@ class Toolkit:
             if row["value_datatype"] == "xsd:string":
                 data.at[index, "value_string"] = data["value"][index] #.astype('str')
 
-            if row["value_datatype"] == "xsd:float":
+            if row["value_datatype"] == "xsd:float" and row["model"] not in ["Medication"]:
                 data.at[index, "value_float"] = data["value"][index] #.astype('float64')
 
-            if row["value_datatype"] == "xsd:integer":
+            if row["value_datatype"] == "xsd:integer" and row["model"] not in ["Medication"]:
                 data.at[index, "value_integer"] = data["value"][index] #.astype('int64')
 
             if row["value_datatype"] == "xsd:date":
@@ -141,7 +141,7 @@ class Toolkit:
             if row["model"] in ["Sex","Status","Diagnosis","Phenotype","Clinical_trial","Body_measurement"]:
                 data.at[index, "attribute_type"] = data["valueIRI"][index]
 
-            if row["model"] in ["Genotype","Protein","Imaging"]:
+            if row["model"] in ["Imaging"]:
                 data.at[index, "output_id"] = data["valueIRI"][index]
                 
             if row["model"] in ["Zygosity"]:
@@ -153,14 +153,16 @@ class Toolkit:
             if row["model"] in ["Zygosity","Genotype", "Protein"]:
                 data.at[index, "target_id"] = data["target"][index]
             
-            if row["model"] in ["Symptoms_onset","Lab_measurement","Biobank","Surgical","Imaging","Questionnaire"]:
+            if row["model"] in ["Symptoms_onset","Lab_measurement","Surgical","Imaging","Questionnaire"]:
                 data.at[index, "target_type"] = data["target"][index]
                 
+            data = data.where(pd.notnull(data), None)
+
             ## Input edition 
             # Tecnically is not required becuase its not needed to separate input_id and input_type
             # Just in case in the future is required to split
-            if row["model"] in ["Genotype","Zygosity","Protein","Lab_measurement","Imaging"]:
-                data.at[index, "input_type"] = data["input"][index]              
+            if row["model"] in ["Genotype","Zygosity","Protein","Lab_measurement","Imaging","Biobank"]:
+                data.at[index, "input_type"] = data["input"][index]          
             
             ## Agent edition
             if row["model"] in ["Biobank","Clinical_trial"]:
@@ -207,7 +209,7 @@ class Toolkit:
     def clean_empty_rows(self, data):
 
         for row_final in data.iterrows():
-            if row_final[1]["value"] == None and row_final[1]["valueIRI"] == None and row_final[1]["activity"] == None and row_final[1]["target"] == None and row_final[1]["model"] not in ["Biobank", "Consent_used", "Consent_contacted"]:
+            if row_final[1]["value"] == None and row_final[1]["valueIRI"] == None and row_final[1]["activity"] == None and row_final[1]["target"] == None and row_final[1]["agent"] == None and row_final[1]["model"] not in ["Biobank", "Consent_used", "Consent_contacted"]:
                 data = data.drop(row_final[0])
         return data
     

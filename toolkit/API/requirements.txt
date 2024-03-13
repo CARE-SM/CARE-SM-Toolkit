@@ -1,6 +1,6 @@
 pyperseo
 pandas
-CARE-SM-Toolkit
+CARE-SM-Toolkit == 0.0.11
 fastapi
 uvicorn
 rdflib

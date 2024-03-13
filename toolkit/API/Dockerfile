@@ -1,5 +1,5 @@
 FROM python:3.8 
-RUN apt-get update && apt-get -y dist-upgrade
+# RUN apt-get update && apt-get -y dist-upgrade
 WORKDIR /code
 COPY . /code
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
