@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="CARE-SM-Toolkit",
-    version="0.0.11",
+    version="0.0.12",
     packages=["toolkit"],
     author="Pablo Alarcón Moreno",
     author_email="pabloalarconmoreno@gmail.com",

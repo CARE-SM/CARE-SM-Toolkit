@@ -5,7 +5,7 @@ class Template:
     Birthdate = dict(
         pid = None,
         process_type = "http://purl.obolibrary.org/obo/NCIT_C142470",
-        attribute_type = "http://purl.obolibrary.org/obo/NCIT_C6861",
+        attribute_type = "http://purl.obolibrary.org/obo/NCIT_C68615",
         agent_type = None,
         agent_id = None,
         input_type = None,
