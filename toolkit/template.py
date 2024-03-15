@@ -829,7 +829,7 @@ class Template:
     
     Medication = dict(
         pid = None,
-        process_type = "http://purl.obolibrary.org/obo/NCIT_C25409",
+        process_type = "http://purl.obolibrary.org/obo/NCIT_C70962",
         attribute_type = None,
         agent_type = None,
         agent_id = None,
