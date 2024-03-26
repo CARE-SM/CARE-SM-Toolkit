@@ -7,3 +7,4 @@ toolkit/trial.py
 .pytest_cache
 toolkit/API/__pycache__
 toolkit/API/__pycache__/main.cpython-310.pyc
+toolkit/exemplar_data/preCARE_Mark.csv

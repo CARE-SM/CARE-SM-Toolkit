@@ -36,8 +36,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
     Birthyear = dict(
         pid = None,
@@ -73,8 +80,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
     Deathdate = dict(
         pid = None,
@@ -110,8 +124,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
     First_visit = dict(
         pid = None,
@@ -147,8 +168,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
     Symptoms_onset = dict(
         pid = None,
@@ -184,8 +212,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
     Sex = dict(
         pid = None,
@@ -221,8 +256,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
         
     Status = dict(
@@ -259,8 +301,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
     Education = dict(
         pid = None,
@@ -296,8 +345,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
         
         
@@ -335,8 +391,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
         
     Phenotype = dict(
@@ -373,8 +436,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
         
     Genotype = dict(
@@ -411,8 +481,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
         
     Zygosity = dict(
@@ -449,8 +526,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
         
     Protein = dict(
@@ -487,8 +571,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
         
     Consent_contacted = dict(
@@ -525,8 +616,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
         
     Consent_used = dict(
@@ -563,8 +661,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
         
         
     Biobank = dict(
@@ -601,8 +706,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
     XXX = dict(
         pid = None,
@@ -638,8 +750,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
 
     Disability = dict(
@@ -676,8 +795,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
     Body_measurement = dict(
         pid = None,
@@ -713,8 +839,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
     Lab_measurement = dict(
         pid = None,
@@ -750,8 +883,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
     Imaging = dict(
         pid = None,
@@ -787,8 +927,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
     Surgery = dict(
         pid = None,
@@ -824,7 +971,12 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None
     ),
     
     Medication = dict(
@@ -861,8 +1013,15 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    ),
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None,
+        input = None,
+        unit = None
+        ),
     
     
     Clinical_trial = dict(
@@ -899,7 +1058,11 @@ class Template:
         enddate = None,
         age = None,
         uniqid = None,
-        event_id = None
-    )
+        event_id = None,
+        value = None,
+        valueIRI = None,
+        activity = None,
+        target = None,
+        agent = None    )
 
   )
