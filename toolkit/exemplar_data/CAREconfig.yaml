@@ -134,19 +134,23 @@ Genotype_HGVS:
   cde: Genotype
   columns:
     pid: patient_id
-    target: variant-id
+    valueIRI: variant-id
     value: variant-value
+    agent: zygosity
+    target: target-molecule
     startdate: consent-date
     # enddate: consent-date
     event_id: consent-date-context
 
 
-Genotype_zygosity:
-  cde: Zygosity
+Genotype_OMIM:
+  cde: Genotype
   columns:
     pid: patient_id
-    valueIRI: zygosity
-    target: variant-id
+    valueIRI: omim-id
+    value: omim-value
+    agent: zygosity
+    target: target-molecule
     startdate: consent-date
     # enddate: consent-date
     event_id: consent-date-context
@@ -170,6 +174,7 @@ Disability:
     pid: patient_id
     value: disability-score
     startdate: symptom-date
+    activity: disability-type
     # enddate: symptom-date
     event_id: symptom-date-context
     
@@ -178,7 +183,7 @@ Biobank:
   cde: Biobank
   columns:
     pid: patient_id
-    input: biobank-id
+    agent: biobank-id
     startdate: consent-date
     # enddate: consent-date
     event_id: consent-date-context

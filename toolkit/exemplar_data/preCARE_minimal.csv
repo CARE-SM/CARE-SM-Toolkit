@@ -7,7 +7,7 @@ Status,30056,12345,Dead,,,http://semanticscience.org/resource/SIO_010059,,,,,,,,
 Sex,30056,12345,Male,,,http://purl.obolibrary.org/obo/NCIT_C20197,,,,,,,,1994-12-25,,
 Diagnosis,30056,45678,Pediatric systemic lupus erythematosus,,,http://www.orpha.net/ORDO/Orphanet_93552,,,,,,,,2006-01-19,,
 Phenotype,30056,12345,Systemic lupus erythematosus,,,http://purl.obolibrary.org/obo/HP_0002725,,,,,,,,2006-01-19,,
-Genotype,30056,12345,RCV000652057,,,,,,,https://www.ncbi.nlm.nih.gov/clinvar/RCV000652057/,,,,2006-01-19,,
+Genotype,30056,12345,NM-004006.2:c.4375C>T p.(Arg1459*),,,https://www.ncbi.nlm.nih.gov/clinvar/RCV000652057/,http://purl.obolibrary.org/obo/NCIT_C18477,,,http://purl.obolibrary.org/obo/NCIT_C97927,,,http://purl.obolibrary.org/obo/GENO_0000136,2006-01-19,,
 Consent_contacted,30056,45678,Consent to be contacted,,,,,,,,,,,1994-12-25,,Consent to be contacted
 Consent_used,30056,45678,Consent to reuse data for research,,,,,,,,,,,1994-12-25,,Consent to reuse data for research
 Biobank,30056,45678,,,,,,,,,,,https://directory.bbmri-eric.eu/,1994-12-25,,"Yes, its available"

@@ -138,22 +138,19 @@ class Toolkit:
                 elif row['model'] in ['Imaging']:
                     data.at[index, 'output_id'] = value_iri
                     
-                elif row['model'] in ['Zygosity']:
+                elif row['model'] in ['Genotype']:
                     data.at[index, 'output_type'] = value_iri
 
             if 'target' in data.columns and not_null_data.loc[index, 'target']:
                 target = data.loc[index, 'target']
-                
-                if row['model'] in ['Zygosity', 'Genotype', 'Protein']:
-                    data.at[index, 'target_id'] = target
                     
-                elif row['model'] in ['Symptoms_onset', 'Lab_measurement', 'Surgical', 'Imaging', 'Questionnaire']:
+                if row['model'] in ['Symptoms_onset', 'Lab_measurement', 'Surgical', 'Imaging', 'Questionnaire', 'Genotype']:
                     data.at[index, 'target_type'] = target
 
             if 'input' in data.columns and not_null_data.loc[index, 'input']:
                 input_value = data.loc[index, 'input']
                 
-                if row['model'] in ['Genotype', 'Zygosity', 'Protein', 'Lab_measurement', 'Imaging', 'Biobank']:
+                if row['model'] in ['Genotype', 'Lab_measurement', 'Imaging', 'Biobank']:
                     data.at[index, 'input_type'] = input_value
 
             if 'agent' in data.columns and not_null_data.loc[index, 'agent']:
@@ -164,11 +161,14 @@ class Toolkit:
                     
                 elif row['model'] in ['Medication', 'Surgery']:
                     data.at[index, 'substance_id'] = agent
+                
+                elif row['model'] in ['Genotype']:
+                    data.at[index, 'attribute_type'] = agent
 
             if 'activity' in data.columns and not_null_data.loc[index, 'activity']:
                 activity = data.loc[index, 'activity']
                 
-                if row['model'] in ['Disability', 'Lab_measurement', 'Imaging', 'Surgery', 'Genotype', 'Zygosity', 'Protein']:
+                if row['model'] in ['Disability', 'Lab_measurement', 'Imaging', 'Surgery', 'Genotype']:
                     data.at[index, 'specific_process_type'] = activity
                     
                 elif row['model'] in ['Medication']:
