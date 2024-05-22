@@ -13,5 +13,5 @@ with open("toolkit/exemplar_data/CAREconfig.yaml") as file:
 
 test_fiab= Toolkit()
 
-test_done_fiab = test_fiab.whole_quality_control(input_data="toolkit/exemplar_data/preCARE_TEST.csv")
-test_done_fiab.to_csv ("toolkit/exemplar_data/CARE_TEST.csv", index = False, header=True)
+test_done_fiab = test_fiab.whole_quality_control(input_data="toolkit/exemplar_data/preCARE.csv")
+test_done_fiab.to_csv ("toolkit/exemplar_data/CARE.csv", index = False, header=True)
