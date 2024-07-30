@@ -1,0 +1,2 @@
+model,pid,protocol_id,frequency_type,frequency_value,value_datatype,comments,startdate,enddate,age,event_id,value,valueIRI,activity,target,agent,input,unit
+Genotype,50012001,,,,xsd:string,,1998-06-30,1998-06-30,,788455685,601556,https://www.omim.org/entry/601556,,http://purl.obolibrary.org/obo/NCIT_C97927,http://purl.obolibrary.org/obo/GENO_0000136,,
