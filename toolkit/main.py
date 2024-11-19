@@ -120,14 +120,21 @@ class Toolkit:
                 value = data.loc[index, 'value']
                 if row['value_datatype'] == 'xsd:string':
                     data.at[index, 'value_string'] = value
-                elif row['value_datatype'] == 'xsd:float' and row['model'] not in ['Medication']:
+                    
+                elif row['value_datatype'] == 'xsd:float' and row['model'] not in ['Medication','Genetic']:
                     data.at[index, 'value_float'] = value
-                elif row['value_datatype'] == 'xsd:integer' and row['model'] not in ['Medication']:
+                    
+                elif row['value_datatype'] == 'xsd:integer' and row['model'] not in ['Medication','Genetic']:
                     data.at[index, 'value_integer'] = value
+                    
                 elif row['value_datatype'] == 'xsd:date':
                     data.at[index, 'value_date'] = value
+                    
                 elif row['model'] in ['Medication']:
                     data.at[index, 'concentration_value'] = value
+                    
+                elif row['model'] in ['Genetic']:
+                    data.at[index, 'output_id_value'] = value
 
             if 'valueIRI' in data.columns and not_null_data.loc[index, 'valueIRI']:
                 value_iri = data.loc[index, 'valueIRI']
@@ -135,41 +142,41 @@ class Toolkit:
                 if row['model'] in ['Sex', 'Status', 'Diagnosis', 'Phenotype', 'Clinical_trial', 'Body_measurement']:
                     data.at[index, 'attribute_type'] = value_iri
                     
-                elif row['model'] in ['Imaging']:
+                elif row['model'] in ['Imaging','Genetic']:
                     data.at[index, 'output_id'] = value_iri
-                    
-                elif row['model'] in ['Genotype']:
-                    data.at[index, 'output_type'] = value_iri
 
             if 'target' in data.columns and not_null_data.loc[index, 'target']:
                 target = data.loc[index, 'target']
                     
-                if row['model'] in ['Symptoms_onset', 'Lab_measurement', 'Surgical', 'Imaging', 'Questionnaire', 'Genotype']:
+                if row['model'] in ['Symptoms_onset', 'Lab_measurement', 'Surgical', 'Imaging']:
                     data.at[index, 'target_type'] = target
+
+                if row['model'] in ['Genetic']:
+                    data.at[index, 'attribute_type'] = target
 
             if 'input' in data.columns and not_null_data.loc[index, 'input']:
                 input_value = data.loc[index, 'input']
                 
-                if row['model'] in ['Genotype', 'Lab_measurement', 'Imaging', 'Biobank']:
+                if row['model'] in ['Genetic', 'Lab_measurement', 'Imaging', 'Biobank']:
                     data.at[index, 'input_type'] = input_value
 
             if 'agent' in data.columns and not_null_data.loc[index, 'agent']:
                 agent = data.loc[index, 'agent']
                 
                 if row['model'] in ['Biobank', 'Clinical_trial']:
-                    data.at[index, 'agent_id'] = agent
+                    data.at[index, 'organization_id'] = agent
                     
-                elif row['model'] in ['Medication', 'Surgery']:
+                elif row['model'] in ['Medication']:
                     data.at[index, 'substance_id'] = agent
-                
-                elif row['model'] in ['Genotype']:
-                    data.at[index, 'attribute_type'] = agent
+                    
+                elif row['model'] in ['Genetic']:
+                    data.at[index, 'output_type'] = agent
 
             if 'activity' in data.columns and not_null_data.loc[index, 'activity']:
                 activity = data.loc[index, 'activity']
                 
-                if row['model'] in ['Disability', 'Lab_measurement', 'Imaging', 'Surgery', 'Genotype']:
-                    data.at[index, 'specific_process_type'] = activity
+                if row['model'] in ['Disability', 'Lab_measurement', 'Imaging', 'Surgery', 'Genetic','Questionnaire']:
+                    data.at[index, 'specific_method_type'] = activity
                     
                 elif row['model'] in ['Medication']:
                     data.at[index, 'activity_type'] = activity
@@ -207,7 +214,7 @@ class Toolkit:
 
         for row in data.iterrows():
             if all(row[1][col] is None for col in columns_to_check):
-                if row[1]['model'] not in ['Biobank', 'Consent_used', 'Consent_contacted']: 
+                if row[1]['model'] not in ['Biobank', 'Consent_used', 'Consent_contacted']: #TODO mirarme esto
                     data = data.drop(row[0])
         return data
     
