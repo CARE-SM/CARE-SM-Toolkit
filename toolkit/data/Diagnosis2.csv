@@ -1,0 +1,2 @@
+model,pid,event_id,value,age,value_datatype,valueIRI,activity,unit,input,target,frequency_type,frequency_value,agent,startdate,enddate,comments
+Diagnosis,30056,45678,Pediatric systemic lupus erythematosus,,,http://www.orpha.net/ORDO/Orphanet_93552,,,,,,,,2006-01-19,,

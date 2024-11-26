@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   api:
-    image: pabloalarconm/care-sm-toolkit:0.0.19
+    image: pabloalarconm/care-sm-toolkit:0.1.1
     ports:
       - "8000:8000"
     volumes:

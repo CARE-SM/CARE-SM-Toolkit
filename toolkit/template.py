@@ -672,7 +672,7 @@ class Template:
         unit = None
         ),
     
-    Body_measurement = dict(
+    Corporal = dict(
         pid = None,
         process_type = "http://purl.obolibrary.org/obo/NCIT_C142470",
         attribute_type = None,
@@ -716,7 +716,7 @@ class Template:
         unit = None
         ),
     
-    Lab_measurement = dict(
+    Laboratory = dict(
         pid = None,
         process_type = "http://purl.obolibrary.org/obo/NCIT_C25294",
         attribute_type = None,
