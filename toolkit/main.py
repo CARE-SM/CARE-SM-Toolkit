@@ -250,15 +250,17 @@ class Toolkit:
 
     # Time edition
     def time_edition(self, data):
-        
+        # Replace NaN values with None for consistency
         data = data.where(pd.notnull(data), None)
 
+        # Ensure the 'enddate' column can hold string or datetime values
+        data['enddate'] = data['enddate'].astype(object)  # Alternatively, use string or datetime as needed
+
         for index, row in data.iterrows():
-            ## From startdate to enddate
-            
-            if type(row['enddate']) == float or row['enddate'] == None: #TODO work on nan values to filter them better
+            # If 'enddate' is NaN or None, replace it with 'startdate'
+            if pd.isna(row['enddate']):  # Handles NaN and None
                 data.at[index, 'enddate'] = row['startdate']
-                
+
         return data
 
     #Clean rows with no value

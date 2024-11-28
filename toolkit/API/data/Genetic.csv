@@ -1,0 +1,2 @@
+model,pid,event_id,value,age,value_datatype,valueIRI,activity,unit,input,target,frequency_type,frequency_value,agent,startdate,enddate,comments
+Genetic,30056,12345,NM-004006.2:c.4375C>T p.(Arg1459*),,,https://www.ncbi.nlm.nih.gov/clinvar/RCV000652057/,http://purl.obolibrary.org/obo/NCIT_C18477,,,http://purl.obolibrary.org/obo/GENO_0000136,,,http://purl.obolibrary.org/obo/NCIT_C97927,2006-01-19,,

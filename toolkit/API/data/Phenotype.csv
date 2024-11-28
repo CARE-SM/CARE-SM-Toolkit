@@ -1,0 +1,2 @@
+model,pid,event_id,value,age,value_datatype,valueIRI,activity,unit,input,target,frequency_type,frequency_value,agent,startdate,enddate,comments
+Phenotype,30056,12345,Systemic lupus erythematosus,,,http://purl.obolibrary.org/obo/HP_0002725,,,,,,,,2006-01-19,,
