@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="care_sm_toolkit",  # Normalized project name to comply with PEP 625
-    version="0.1.5",
+    version="0.1.6",
     packages=find_packages(),
     author="Pablo Alarcón Moreno",
     author_email="pabloalarconmoreno@gmail.com",

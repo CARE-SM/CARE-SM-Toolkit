@@ -240,7 +240,7 @@ class Toolkit:
             if 'unit' in data.columns and not_null_data.loc[index, 'unit']:
                 unit_value = data.loc[index, 'unit']
                 
-                if row['model'] in ['Corporal', 'Laboratory']:
+                if row['model'] in ['Corporal', 'Laboratory', 'Questionnaire', 'Disability']:
                     data.at[index, 'unit_type'] = unit_value
                     
                 elif row['model'] in ['Medication']:

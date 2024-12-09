@@ -14,7 +14,6 @@ async def api_running():
 async def csv_transformation_by_caresm_toolkit(response: Response):
     toolkit_instance = Toolkit()
     toolkit_instance.whole_method(folder_path=folder)
-    print(folder)
     response.status_code = status.HTTP_200_OK
     if response.status_code == 200:
         return {response.status_code: "Structural Transformation done"}

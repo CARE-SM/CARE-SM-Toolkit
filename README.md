@@ -41,7 +41,7 @@ If you are not interested on running Docker image, you can install the Pyhton mo
 ###  Installation:
 
 ```bash
-pip install CARE-SM-Toolkit
+pip install care_sm_toolkit
 ```
 **Requirements:**
 
@@ -50,11 +50,10 @@ pip install CARE-SM-Toolkit
 **Test:**
 
 ```py
-import pandas as pd
-from main import Toolkit
+from toolkit.main import Toolkit
 
-test= Toolkit()
+# Change the folder_path based on your requirements
 
-test_done = test.whole_quality_control(input_data="toolkit/exemplar_data/preCARE.csv")
-test_done.to_csv ("toolkit/exemplar_data/CARE.csv", index = False, header=True)
+test_fiab= Toolkit()
+test_done_fiab = test_fiab.whole_method(folder_path="toolkit/data/")
 ```
