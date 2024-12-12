@@ -1,0 +1,2 @@
+model,pid,value_datatype,startdate,enddate,event_id,value,agent
+Biobank,50012001,xsd:string,1998-06-30,1998-06-30,788455685,s6947659,https://directory.bbmri-eric.eu/#/collection/bbmri-eric:ID:DE_BMBH:collection:VBBH
