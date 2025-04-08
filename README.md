@@ -18,42 +18,77 @@ The toolkit serves as a module dedicated to performing a curation step prior to 
 
 * Creation of the column called `uniqid` that assigns a unique identifier to each observation. This prevents the RDF instances from overlapping with one another, ensuring their distinctiveness and integrity.
 
+# Requirements 
+
+- CSV data table glossary with every data element documented at [CARE-SM implementation](https://github.com/CARE-SM/CARE-SM-Implementation/blob/main/CSV/README.md)
+
+
+
 ## Dockerized implementation
 
-There's a Docker-based implementation controlled via API (using FastAPI) that you can use for mounting this data transformation step as a part of your CARE-SM implementation. Use our docker compose to control your Docker image, ports where its located and volumes in order to pass your CSV-based patient data:
+There's a Docker-based implementation controlled via API (using FastAPI) that you can use for mounting this data transformation step as a part of your CARE-SM implementation.
 
-```yaml
-version: "3.3"
+You can edit the [docker-compose.yaml](docker-compose.yaml) to control the volume folder in order to pass your CSV-based patient data:
 
-services:
-  api:
-    image: pabloalarconm/care-sm-toolkit:latest # check for latest version
-    ports:
-      - "8000:8000"
+```
     volumes:
-      - ./data:/code/data
+      - ./location/of/your/data:/code/data
+```
+
+Run [docker compose](https://docs.docker.com/compose/) to build and start the containers:
+
+``` 
+ docker compose up -d
+```
+
+To make the data transformation do the following:
+
+```
+curl http://localhost:8080/XXXXX
+```
+ 
+Congrats! You will find your transformed data in XXXXX folder.
+
+To stop and remove the implementation do the following:
+
+```
+docker compose down
 ```
 
 ## Local implementation
 
 If you are not interested on running Docker image, you can install the Pyhton module for local implementation.
 
-###  Installation:
+###  Installation
+ 
+Python 3.5 or later is needed. The script depends on standard libraries, plus the ones declared in [requirements.txt](requirements.txt).
+ 
+ * In order to install the dependencies you need `pip` and `venv` Python modules.
+	- `pip` is available in many Linux distributions (Ubuntu package `python-pip`, CentOS EPEL package `python-pip`), and also as [pip](https://pip.pypa.io/en/stable/) Python package.
+	- `venv` is also available in many Linux distributions (Ubuntu package `python3-venv`). In some of these distributions `venv` is integrated into the Python 3.5 (or later) installation.
+
+* The creation of a virtual environment and installation of the dependencies in that environment is done running:
+
+```bash
+python3 -m venv .pyDBenv
+source .pyDBenv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+Install the toolkit library:
 
 ```bash
 pip install care_sm_toolkit
 ```
-**Requirements:**
 
-- CSV data table glossary with every data element documented at [CARE-SM implementation](https://github.com/CARE-SM/CARE-SM-Implementation/blob/main/CSV/README.md)
+###  Transforming the data
 
-**Test:**
+Finally, convert CARE-SM csv files to `CARE.csv`. To work with your data change the folder path inside the [trial.py](trial.py) script. And run it:
 
-```py
-from toolkit.main import Toolkit
-
-# Change the folder_path based on your requirements
-
-test_fiab= Toolkit()
-test_done_fiab = test_fiab.whole_method(folder_path="toolkit/data/")
 ```
+python3 trial.py
+```
+
+Congrats! You will find your `CARE.csv` file in [/toolkit/data/CARE.csv](/toolkit/data/CARE.csv).
+
