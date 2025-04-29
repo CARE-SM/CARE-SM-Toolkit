@@ -12,42 +12,48 @@ The toolkit serves as a module dedicated to performing a curation step prior to 
 
 * Splitting the column labeled as `value` into distinct datatypes. This enables YARRRML to interpret each datatype differently, facilitating the subsequent processing.
 
-* Conducting a quality control among `age`/`date`, `stardate` and `enddate` columns to ensure data consistency and validity.
+* Conducting a quality control among `age`/`date`, `startdate` and `enddate` columns to ensure data consistency and validity.
 
-* Eliminating any row that lacks of the minimal required data to minimize the generation of incomplete RDF transformations.
+* Eliminating any row that lacks the minimal required data to minimize the generation of incomplete RDF transformations.
 
 * Creation of the column called `uniqid` that assigns a unique identifier to each observation. This prevents the RDF instances from overlapping with one another, ensuring their distinctiveness and integrity.
 
 ## Requirements 
 
-- CSV data table glossary with every data element documented at [CARE-SM implementation](https://github.com/CARE-SM/CARE-SM-Implementation/blob/main/CSV/README.md)
+- In order to use CARE-SM Toolkit functionality:
+* All CSV files **MUST** be named according the data tags described at the CARE-SM glossary, documented at [CARE-SM implementation](https://github.com/CARE-SM/CARE-SM-Implementation/blob/main/CSV/README.md) E.g.: `Diagnosis.csv`, `Birthdate.csv`
 
+ * All your CSV data content **MUST** be compatible with the CARE-SM glossary, documented at [CARE-SM implementation](https://github.com/CARE-SM/CARE-SM-Implementation/blob/main/CSV/README.md)
 
 
 ## Dockerized implementation
 
 There's a Docker-based implementation controlled via API (using FastAPI) that you can use for mounting this data transformation step as a part of your CARE-SM implementation.
 
-**(Optional)** You can edit the [docker-compose.yaml](docker-compose.yaml) to control the volume folder in order to pass your CSV-based patient data:
+You can edit the [docker-compose.yaml](docker-compose.yaml) to control the volume folder in order to pass your CSV-based patient data:
 
 ```
     volumes:
       - ./location/of/your/data:/code/data
 ```
 
-Run [docker compose](https://docs.docker.com/compose/) to build and start the containers:
+**Note** IP and Port can be customized in the docker compose as well.
+
+Run [docker compose](https://docs.docker.com/compose/) to start the containers:
 
 ``` 
  docker compose up -d
 ```
 
-To make the data transformation do the following:
+Once its running, you can use in your browser the OpenAPI documentation at http://localhost:8080/docs so inspect all the possible requests and trigger the execution
+
+Alternatively, you trigger the data transformation in the terminal by the following:
 
 ```
-curl http://localhost:8080/XXXXX
+curl -X POST http://localhost:8080/toolkit
 ```
  
-**Congrats!** You will find your transformed data in XXXXX folder.
+**Congrats!** You will find your transformed data, stored as `CARE.csv` at the folder you defined as volume below.
 
 To stop and remove the implementation, do the following:
 
@@ -57,7 +63,7 @@ docker compose down
 
 ## Local implementation
 
-If you are not interested on running Docker image, you can install the Pyhton module for local implementation.
+If you are not interested in running our Docker image, you can install the Python module for local implementation.
 
 ###  Installation
  
@@ -76,15 +82,12 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Remeber to `deactivate` your Python environment after using it.
+Remember to `deactivate` your Python environment after using it.
 
-###  Transforming the data
+###  Execution
 
-Finally, convert CARE-SM csv files to `CARE.csv`. To work with your data change the folder path inside the [trial.py](trial.py) script. And run it:
+Then, change the folder path inside the [trial.py](trial.py) script. And run it:
 
 ```
 python3 trial.py
 ```
-
-Congrats! You will find your `CARE.csv` file in [/toolkit/data/CARE.csv](/toolkit/data/CARE.csv).
-
