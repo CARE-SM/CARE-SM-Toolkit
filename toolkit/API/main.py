@@ -1,22 +1,31 @@
 from fastapi import FastAPI, Response, status
-# import pandas
 import uvicorn
-import os
+from pathlib import Path
 from toolkit.main import Toolkit
+import logging
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
-folder = os.getcwd() + "/data/"
+
+folder = Path(__file__).resolve().parent.parent / "data"
+
 @app.get("/")
 async def api_running():
-    return {'message': 'API running'}
+    return {'API-status': 'running'}
 
-@app.post("/toolkit")
-async def csv_transformation_by_caresm_toolkit(response: Response):
+@app.post("/toolkit", status_code=status.HTTP_200_OK)
+async def csv_transformation_by_caresm_toolkit():
     toolkit_instance = Toolkit()
-    toolkit_instance.whole_method(folder_path=folder)
-    response.status_code = status.HTTP_200_OK
-    if response.status_code == 200:
-        return {response.status_code: "Structural Transformation done"}
+
+    try:
+        toolkit_instance.whole_method(folder_path=str(folder))
+        logger.info("Structural Transformation completed successfully.")
+        return {"message": "Structural Transformation done"}
+    except Exception as e:
+        return Response(
+            content=f"An error occurred: {str(e)}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
