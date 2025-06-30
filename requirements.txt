@@ -1,4 +1,3 @@
-pyperseo==0.1.1
-pandas==2.2.3
-rdflib==7.1.4
-care_sm_toolkit==0.1.6
+pyperseo
+pandas
+rdflib
