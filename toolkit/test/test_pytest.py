@@ -1,122 +1,168 @@
 import pytest
+from unittest.mock import patch, mock_open
 import pandas as pd
-from toolkit.main import Toolkit as Tool
+import os
 
-@pytest.mark.parametrize("input_data", [
-    ("exemplar_data/fiab_input_data.csv")
-])
-def test_import_data_works(input_data):
-    toolkit = Tool()
-    result = toolkit.import_your_data_from_csv(input_data)
-    assert result is not False
+from toolkit.main import Toolkit
+from toolkit.template import Template
 
-@pytest.mark.parametrize("input_data", [
-    (pd.DataFrame({'model': [1, 2], 'pid': [1, 2], 'event_id': [1, 2], 'value': [1, 2], 'age': [1, 2], 'value_datatype': [1, 2], 'valueIRI': [1, 2], 'activity': [1, 2], 'protocol_id':[1, 2],'unit': [1, 2], 'input': [1, 2], 'target': [1, 2], 'intensity': [1, 2],'frequency_type': [1, 2], 'frequency_value': [1, 2], 'agent_id': [1, 2], 'route': [1, 2], 'startdate': [1, 2], 'enddate': [1, 2], 'comments': [1, 2]})),
-    (pd.DataFrame({'model': [1, 2], 'pid': [1, 2],'pid2': [1, 2], 'event_id': [1, 2], 'value': [1, 2], 'age': [1, 2], 'value_datatype': [1, 2], 'valueIRI': [1, 2], 'activity': [1, 2],'protocol_id':[1, 2], 'unit': [1, 2], 'input': [1, 2], 'target': [1, 2],'intensity': [1, 2], 'frequency_type': [1, 2], 'frequency_value': [1, 2], 'agent_id': [1, 2], 'route': [1, 2], 'startdate': [1, 2], 'enddate': [1, 2], 'comments': [1, 2]})),
-])
-def test_column_names_are_present(input_data):
-    toolkit = Tool()
-    result = toolkit.check_status_column_names(input_data)
-    assert result is not False
+@pytest.fixture
+def toolkit():
+    return Toolkit()
 
-@pytest.mark.parametrize("input_data", [
-    (pd.DataFrame({'model': [1, 2], 'event_id': [1, 2], 'value': [1, 2], 'age': [1, 2], 'value_datatype': [1, 2], 'valueIRI': [1, 2], 'activity': [1, 2],'protocol_id':[1, 2], 'unit': [1, 2], 'input': [1, 2], 'target': [1, 2], 'intensity': [1, 2],'frequency_type': [1, 2], 'frequency_value': [1, 2], 'agent_id': [1, 2], 'route': [1, 2], 'startdate': [1, 2], 'enddate': [1, 2], 'comments': [1, 2]})),
-    (pd.DataFrame({'model': [1, 2], 'pid': [1, 2],'pid2': [3, 4], 'value': [1, 2], 'age': [1, 2], 'value_datatype': [1, 2], 'valueIRI': [1, 2], 'activity': [1, 2], 'protocol_id':[1, 2],'unit': [1, 2], 'input': [1, 2], 'target': [1, 2], 'intensity': [1, 2],'frequency_type': [1, 2], 'frequency_value': [1, 2], 'agent_id': [1, 2], 'route': [1, 2], 'startdate': [1, 2], 'enddate': [1, 2], 'comments': [1, 2]})),
-])
-def test_column_names_are_not_present(input_data):
-    toolkit = Tool()
-    result = toolkit.check_status_column_names(input_data)
-    assert result == False
+@pytest.fixture
+def sample_df():
+    return pd.DataFrame({
+        "model": ["Sex"],
+        "pid": ["001"],
+        "event_id": ["E001"],
+        "value": ["M"],
+        "age": [30],
+        "value_datatype": ["xsd:string"],
+        "valueIRI": ["http://example.org/sex/male"],
+        "activity": [None],
+        "unit": [None],
+        "input": [None],
+        "target": [None],
+        "protocol_id": [None],
+        "frequency_type": [None],
+        "frequency_value": [None],
+        "agent": [None],
+        "startdate": ["2021-01-01"],
+        "enddate": [None],
+        "comments": [None]
+    })
 
-@pytest.mark.parametrize("data_with_duplicates", [
-    (pd.DataFrame({'model': ["model", 2], 'pid': [1, 2],'event_id': [1, 2], 'value': [1, 2], 'age': [1, 2], 'value_datatype': [1, 2], 'valueIRI': [1, 2], 'activity': [1, 2], 'protocol_id':[1, 2], 'unit': [1, 2], 'input': [1, 2], 'target': [1, 2], 'intensity': [1, 2],'frequency_type': [1, 2], 'frequency_value': [1, 2], 'agent_id': [1, 2], 'route': [1, 2], 'startdate': [1, 2], 'enddate': [1, 2], 'comments': [1, 2]})),
-    (pd.DataFrame({'model': ["model", "model"], 'pid': [1, 2], 'event_id': [1, 2], 'value': [1, 2], 'age': [1, 2], 'value_datatype': [1, 2], 'valueIRI': [1, 2], 'activity': [1, 2], 'protocol_id':[1, 2], 'unit': [1, 2], 'input': [1, 2], 'target': [1, 2], 'intensity': [1, 2],'frequency_type': [1, 2], 'frequency_value': [1, 2], 'agent_id': [1, 2], 'route': [1, 2], 'startdate': [1, 2], 'enddate': [1, 2], 'comments': [1, 2]})),
-])
-def test_duplicated_titles_amog_row(data_with_duplicates):
-    toolkit = Tool()
-    result_with_duplicates = toolkit.check_for_duplicated_titles_among_row(data_with_duplicates)
-    assert result_with_duplicates == True
+# _find_matching_files
 
-@pytest.mark.parametrize("input_data, expected_data", [
+def test_find_matching_files(toolkit, mocker):
+    mocker.patch("os.listdir", return_value=["Sex.csv"])
+    result = toolkit._find_matching_files("/toolkit/data")
+    assert result == [os.path.join("/toolkit/data/Sex.csv")]
 
-    (pd.DataFrame({'model':['Sex'],'valueIRI':['https://Female'],'value': ["Female"],'target': [None], 'value_datatype': ["xsd:string"], 'value_string': [None],'value_id':[None],'attribute_type':[None]}),
-     pd.DataFrame({'model':['Sex'],'valueIRI':['https://Female'],'value': ["Female"],'target': [None], 'value_datatype': ["xsd:string"], 'value_string': ["Female"],'value_id':[None],'attribute_type':['https://Female']})),
-    
-    (pd.DataFrame({'model':['Birthdate'],'valueIRI':[None],'value': ["2021-12-05"],'target': [None], 'value_datatype': ["xsd:date"], 'value_date': [None],'value_id':[None]}),
-     pd.DataFrame({'model':['Birthdate'],'valueIRI':[None],'value': ["2021-12-05"],'target': [None], 'value_datatype': ["xsd:date"], 'value_date': ["2021-12-05"],'value_id':[None]})),
-    ])
+def test_find_matching_files_no_csv(toolkit, mocker):
+    mocker.patch("os.listdir", return_value=["README.txt", "data.json"])
+    result = toolkit._find_matching_files("/toolkit/data")
+    assert result == []
 
-def test_value_edition_works(input_data, expected_data):
-    toolkit = Tool()
-    result_value_edition = toolkit.value_edition(input_data)
-    
-    if "value_integer" in result_value_edition:
-        result_value_edition["value_integer"] = result_value_edition["value_integer"].astype('int64')
-    if "value_float" in result_value_edition:
-        result_value_edition["value_float"] = result_value_edition["value_float"].astype('float')
-    if ("value_string" in result_value_edition):
-        result_value_edition["value_string"] = result_value_edition["value_string"].astype('object')
-    if ("value_date" in result_value_edition):
-        result_value_edition["value_date"] = result_value_edition["value_date"].astype('object')
-        
-    assert result_value_edition.equals(expected_data)
+# import_your_data_from_csv
 
-@pytest.mark.parametrize("input_data, expected_data", [
-    (pd.DataFrame(
-        { 'model': ['Birthdate','Deathdate','Deathdate'],
-                  'startdate':[None,'2020-03-08',None],
-                   'enddate':[None,None,None],
-             }),
-     
-     pd.DataFrame({ 'model': ['Birthdate','Deathdate','Deathdate'],
-                  'startdate':[None,'2020-03-08',None],
-                   'enddate':[None,'2020-03-08',None],
+def test_import_your_data_from_csv_success(toolkit, sample_df, mocker):
+    mocker.patch("builtins.open", mock_open(read_data="model,pid,event_id,value"))
+    mocker.patch("pandas.read_csv", return_value=sample_df)
+    df = toolkit.import_your_data_from_csv("somefile.csv")
+    assert df is not None
 
-             })),
+def test_import_your_data_from_csv_empty(toolkit, mocker):
+    mocker.patch("builtins.open", mock_open(read_data="model,pid,event_id,value"))
+    mocker.patch("pandas.read_csv", return_value=pd.DataFrame())
+    df = toolkit.import_your_data_from_csv("empty.csv")
+    assert df.empty
 
-])
-def test_time_edition_works(input_data, expected_data):
-    toolkit = Tool()
-    result_value_edition = toolkit.time_edition(input_data)
-    
-    if "value_integer" in result_value_edition:
-        result_value_edition["age"] = result_value_edition["age"].astype('float64')
-        result_value_edition["value_integer"] = result_value_edition["value_integer"].astype('float64')
+def test_import_your_data_from_csv_fail(toolkit, mocker):
+    mocker.patch("pandas.read_csv", side_effect=Exception("Error"))
+    df = toolkit.import_your_data_from_csv("badfile.csv")
+    assert df is None
 
-    # print("Actual DataFrame Data Types:")
-    # print(result_value_edition)
+# check_status_column_names
 
-    # print("Expected DataFrame Data Types:")
-    # print(expected_data)
-    assert result_value_edition.equals(expected_data)
+def test_check_status_column_names_valid(toolkit, sample_df):
+    df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
+    result = toolkit.check_status_column_names(df.copy())
+    assert all(col in result.columns for col in Toolkit.columns)
 
-@pytest.mark.parametrize("input_data, expected_data", [
-    (pd.DataFrame(
-        { 'model': ['Diagnosis',"Consent_used","Symptom_onset",'Clinical_trial','Biobank','Biobank'],
-                'value':['valueX',None,'valueX',None,None,None],
-                'valueIRI':['valueX',None,None,'valueX',None,None],
-                'age':['valueX',None,None,None,None,None],
-                'agent_id':[None,None,None,'valueX',None,None],
-                'activity':[None,None,None,None,None,None],
-                'target':[None,None,None,None,None,None],
-             }),
-     
-    pd.DataFrame(
-        { 'model': ['Diagnosis',"Consent_used","Symptom_onset",'Clinical_trial','Biobank','Biobank'],
-                'value':['valueX',None,'valueX',None,None,None],
-                'valueIRI':['valueX',None,None,'valueX',None,None],
-                'age':['valueX',None,None,None,None,None],
-                'agent_id':[None,None,None,'valueX',None,None],
-                'activity':[None,None,None,None,None,None],
-                'target':[None,None,None,None,None,None],
+def test_check_status_column_names_adds_missing_columns(toolkit, sample_df):
+    df = sample_df.copy().drop(columns=["model"])
+    result = toolkit.check_status_column_names(df)
+    assert "model" in result.columns
+    assert all(col in result.columns for col in Toolkit.columns)
 
-             })
-    ),
-])
-def test_clean_empty_rows_works(input_data, expected_data):
-    toolkit = Tool()
-    result_value_edition = toolkit.clean_empty_rows(input_data)
-    assert result_value_edition.equals(expected_data)
+def test_check_status_column_names_invalid(toolkit, sample_df):
+    df = sample_df.copy()
+    df["unexpected"] = "value"
+    with pytest.raises(ValueError):
+        toolkit.check_status_column_names(df)
 
-if __name__ == '__main__':
-    pytest.main([__file__])
+def test_check_status_column_names_extra_columns(toolkit, sample_df):
+    df = sample_df.copy()
+    df["extra_column"] = "unexpected"
+    with pytest.raises(ValueError):
+        toolkit.check_status_column_names(df)
+
+# value_edition
+
+def test_value_edition(toolkit, sample_df):
+    df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
+    edited = toolkit.value_edition(df.copy())
+    assert "value_string" in edited.columns
+    assert edited.loc[0, "value_string"] == "M"
+    assert edited.loc[0, "attribute_type"] == "http://example.org/sex/male"
+
+# time_edition
+
+def test_time_edition(toolkit, sample_df):
+    df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
+    edited = toolkit.time_edition(df.copy())
+    assert edited.loc[0, "enddate"] == "2021-01-01"
+
+def test_time_edition_enddate_none(toolkit, sample_df):
+    df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
+    df.loc[0, "enddate"] = None
+    df.loc[0, "startdate"] = "2020-12-31"
+    edited = toolkit.time_edition(df.copy())
+    assert edited.loc[0, "enddate"] == "2020-12-31"
+
+def test_time_edition_missing_dates(toolkit, sample_df):
+    df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
+    df.loc[0, "startdate"] = None
+    df.loc[0, "enddate"] = None
+    edited = toolkit.time_edition(df.copy())
+    assert edited.loc[0, "enddate"] is None
+
+# clean_empty_rows
+
+def test_clean_empty_rows(toolkit, sample_df):
+    df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
+    cleaned = toolkit.clean_empty_rows(df.copy(), "fake.csv")
+    assert len(cleaned) == 1
+
+def test_clean_empty_rows_all_empty(toolkit):
+    df = pd.DataFrame([{col: None for col in Toolkit.columns}])
+    cleaned = toolkit.clean_empty_rows(df.copy(), "fake.csv")
+    assert len(cleaned) == 0
+
+# delete_extra_columns
+
+def test_delete_extra_columns(toolkit, sample_df):
+    df = sample_df.copy()
+    df["extra"] = "something"
+    deleted = toolkit.delete_extra_columns(df)
+    for col in Toolkit.drop_columns:
+        assert col not in deleted.columns
+
+def test_delete_extra_columns_drops_specified(toolkit, sample_df):
+    df = sample_df.copy()
+    df["to_be_dropped"] = "drop me"
+    Toolkit.drop_columns.append("to_be_dropped")
+    deleted = toolkit.delete_extra_columns(df.copy())
+    assert "to_be_dropped" not in deleted.columns
+    Toolkit.drop_columns.remove("to_be_dropped")
+
+# unique_id_generation
+
+def test_unique_id_generation(toolkit, sample_df):
+    df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
+    result = toolkit.unique_id_generation(df.copy())
+    uniqid_value = result.loc[0, "uniqid"]
+    assert isinstance(uniqid_value, str)
+    assert uniqid_value.isdigit()
+    assert len(uniqid_value) == 20
+
+# whole_method
+
+def test_whole_method(toolkit, sample_df, mocker):
+    mocker.patch.object(Toolkit, "_find_matching_files", return_value=["CARE.csv"])
+    mocker.patch.object(Toolkit, "_process_file", return_value=sample_df.reindex(columns=Toolkit.columns, fill_value=None))
+    mock_to_csv = mocker.patch("pandas.DataFrame.to_csv")
+    toolkit.whole_method("/toolkit/data")
+    mock_to_csv.assert_called_once()
