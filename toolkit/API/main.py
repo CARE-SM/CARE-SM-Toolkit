@@ -18,7 +18,35 @@ async def csv_transformation_by_caresm_toolkit():
     toolkit_instance = Toolkit()
 
     try:
-        toolkit_instance.whole_method(folder_path=str(folder))
+        toolkit_instance.whole_method(folder_path=str(folder), template_type="OBO")
+        logger.info("Structural Transformation completed successfully.")
+        return {"message": "Structural Transformation done"}
+    except Exception as e:
+        return Response(
+            content=f"An error occurred: {str(e)}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    
+@app.post("/CSV2OBO", status_code=status.HTTP_200_OK)
+async def csv_transformation_by_caresm_toolkit():
+    toolkit_instance = Toolkit()
+
+    try:
+        toolkit_instance.whole_method(folder_path=str(folder), template_type="OBO")
+        logger.info("Structural Transformation completed successfully.")
+        return {"message": "Structural Transformation done"}
+    except Exception as e:
+        return Response(
+            content=f"An error occurred: {str(e)}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    
+@app.post("/CSV2SNOMED", status_code=status.HTTP_200_OK)
+async def csv_transformation_by_caresm_toolkit():
+    toolkit_instance = Toolkit()
+
+    try:
+        toolkit_instance.whole_method(folder_path=str(folder), template_type="SNOMED")
         logger.info("Structural Transformation completed successfully.")
         return {"message": "Structural Transformation done"}
     except Exception as e:

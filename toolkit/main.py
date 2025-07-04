@@ -1,17 +1,23 @@
 import pandas as pd
 import os
 import logging
-from perseo.main import milisec
-from .template import Template
+from datetime import datetime
+from .template import TEMPLATE_MAP_OBO, TEMPLATE_MAP_SNOMED
 
 logging.basicConfig(level=logging.INFO)
 
-class Toolkit:
-    keywords = {
-        "Birthdate", "Birthyear", "Deathdate", "Sex", "Status", "First_visit", "Education",
+class Toolkit():
+    keywords_OBO = {
+        "Birthdate", "Birthyear", "Deathdate", "Sex", "Status", "First_visit"#, "Education",
         "Questionnaire", "Diagnosis", "Phenotype", "Symptoms_onset", "Corporal", "Laboratory",
-        "Imaging", "Genetic", "Disability", "Medication", "Surgical", "Biobank", "Clinical_trial"
+        "Imaging", "Genetic", "Disability", "Medication", "Surgery", "Biobank", "Clinical_trial"
     }
+    keywords_SNOMED = {
+        "Birthdate", "Birthyear", "Deathdate", "Sex", "Status", "First_visit",
+        "Questionnaire", "Diagnosis", "Phenotype", "Symptoms_onset", "Corporal", "Laboratory",
+        "Imaging", "Genetic", "Disability", "Medication", "Surgery", "Clinical_trial"
+    }
+
 
     columns = [
         "model", "pid", "event_id", "value", "age", "value_datatype", "valueIRI", "activity",
@@ -21,27 +27,40 @@ class Toolkit:
 
     drop_columns = ["value", "valueIRI", "target", "agent", "input", "activity", "unit"]
 
-    def whole_method(self, folder_path):
-        matching_files = self._find_matching_files(folder_path)
-        processed = [self._process_file(file) for file in matching_files]
+    def milisec(self):
+
+        now = datetime.now()
+        now = now.strftime('%Y%m%d%H%M%S%f')
+        return now
+
+    def whole_method(self, folder_path, template_type):
+        matching_files = self._find_matching_files(folder_path, template_type)
+        processed = [self._process_file(file, template_type) for file in matching_files]
         final_df = pd.concat(processed, ignore_index=True) if processed else pd.DataFrame(columns=self.columns)
         final_df = self.delete_extra_columns(final_df)
         final_df.to_csv(os.path.join(folder_path, "CARE.csv"), index=False)
 
-    def _find_matching_files(self, folder_path):
+    def _find_matching_files(self, folder_path, template_type):
+        if template_type == "OBO":
+            keywords = self.keywords_OBO
+        elif template_type == "SNOMED":
+            keywords = self.keywords_SNOMED
+        else:
+            raise ValueError(f"Template type '{template_type}' not recognized.")
+
         return [
             os.path.join(folder_path, file)
             for file in os.listdir(folder_path)
-            if file.endswith(".csv") and any(keyword in file for keyword in self.keywords)
+            if file.endswith(".csv") and any(keyword in file for keyword in keywords)
         ]
 
-    def _process_file(self, filepath):
+    def _process_file(self, filepath, template_type):
         df = self.import_your_data_from_csv(filepath)
         if df is None:
             return pd.DataFrame(columns=self.columns)
 
         df = self.check_status_column_names(df)
-        df = self.add_columns_from_template(df, filepath)
+        df = self.add_columns_from_template(df, filepath, template_type=template_type)
         df = self.value_edition(df)
         df = self.time_edition(df)
         df = self.clean_empty_rows(df, filepath)
@@ -68,12 +87,16 @@ class Toolkit:
 
         return df.where(pd.notnull(df), None)
 
-    def add_columns_from_template(self, df, filepath):
-        template = Template.template_model
+    def add_columns_from_template(self, df, filepath, template_type):
+        if template_type == "OBO":
+            template = TEMPLATE_MAP_OBO
+        elif template_type == "SNOMED":
+            template = TEMPLATE_MAP_SNOMED
+        else:
+            raise ValueError(f"Template type '{template_type}' not recognized.")
         enriched_rows = []
 
         for _, row in df.iterrows():
-            ms_id = milisec()
             model = row['model']
             base = {"model": model}
             base.update(template.get(model, {}))
@@ -156,5 +179,5 @@ class Toolkit:
         return df.drop(columns=[col for col in self.drop_columns if col in df.columns], errors='ignore')
 
     def unique_id_generation(self, df):
-        df['uniqid'] = [milisec() for _ in df.index]
+        df['uniqid'] = [self.milisec() for _ in df.index]
         return df

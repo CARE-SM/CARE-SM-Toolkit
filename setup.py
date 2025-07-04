@@ -5,8 +5,8 @@ with open("requirements.txt") as f:
 
 setup(
     name="care_sm_toolkit",
-    version="0.1.9",
-    packages=find_packages(exclude=["API", "API.*"]),
+    version="0.1.10",
+    packages=find_packages(exclude=["toolkit.API", "toolkit.API.*"]),
     author="Pablo Alarcón Moreno",
     author_email="pabloalarconmoreno@gmail.com",
     url="https://github.com/CARE-SM/CARE-SM-Toolkit",
