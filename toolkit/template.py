@@ -53,6 +53,7 @@ class Template_OBO:
         return entry
 
 TEMPLATE_MAP_OBO = {
+
         "Birthdate": Template_OBO.build_entry(
             process_type="http://purl.obolibrary.org/obo/NCIT_C142470",
             attribute_type="http://purl.obolibrary.org/obo/NCIT_C68615",
@@ -65,11 +66,21 @@ TEMPLATE_MAP_OBO = {
             output_type="http://purl.obolibrary.org/obo/NCIT_C70856",
             value_datatype="xsd:integer"
         ),
+        "Country": Template_OBO.build_entry(
+            process_type="http://purl.obolibrary.org/obo/NCIT_C142470",
+            output_type="http://purl.obolibrary.org/obo/NCIT_C20108",
+            value_datatype="xsd:string"
+        ),
         "Deathdate": Template_OBO.build_entry(
             process_type="http://purl.obolibrary.org/obo/NCIT_C142470",
             attribute_type="http://purl.obolibrary.org/obo/NCIT_C70810",
             output_type="http://purl.obolibrary.org/obo/NCIT_C70856",
             value_datatype="xsd:date"
+        ),
+        "Cause-death": Template_OBO.build_entry(
+            process_type="http://purl.obolibrary.org/obo/NCIT_C142470",
+            output_type="http://purl.obolibrary.org/obo/NCIT_C117544",
+            value_datatype="xsd:string"
         ),
         "First_visit": Template_OBO.build_entry(
             process_type="http://purl.obolibrary.org/obo/NCIT_C142470",
@@ -114,8 +125,8 @@ TEMPLATE_MAP_OBO = {
             output_type="http://purl.obolibrary.org/obo/NCIT_C70856",
             value_datatype="xsd:float"
         ),
-        "Corporal": Template_OBO.build_entry(
-            process_type="http://purl.obolibrary.org/obo/NCIT_C142470",
+        "Examination": Template_OBO.build_entry(
+            process_type="http://purl.obolibrary.org/obo/MAXO_0000487",
             output_type="http://purl.obolibrary.org/obo/NCIT_C70856",
             value_datatype="xsd:float"
         ),
@@ -125,22 +136,32 @@ TEMPLATE_MAP_OBO = {
             protocol_type="http://purl.obolibrary.org/obo/OBI_0000272",
             value_datatype="xsd:float"
         ),
-        "Imaging": Template_OBO.build_entry(
-            process_type = "http://purl.obolibrary.org/obo/NCIT_C17369",
-            output_type = "http://purl.obolibrary.org/obo/NCIT_C70856", 
-            output_id_type = "http://purl.obolibrary.org/obo/NCIT_C81289",
-            value_datatype = "xsd:string"
-        ),
+        # "Imaging": Template_OBO.build_entry(
+        #     process_type = "http://purl.obolibrary.org/obo/NCIT_C17369",
+        #     output_type = "http://purl.obolibrary.org/obo/NCIT_C70856", 
+        #     output_id_type = "http://purl.obolibrary.org/obo/NCIT_C81289",
+        #     value_datatype = "xsd:string"
+        # ),
         "Surgery": Template_OBO.build_entry(
             process_type = "http://purl.obolibrary.org/obo/NCIT_C15329",
-            protocol_type = "http://purl.obolibrary.org/obo/OBI_0000272",        
             value_datatype = "xsd:string"
+        ),
+        "Hospitalization": Template_OBO.build_entry(
+            process_type = "http://purl.obolibrary.org/obo/NCIT_C25179",
+            value_datatype = "xsd:string"
+        ),
+        "Prescription": Template_OBO.build_entry(
+            process_type = "http://purl.obolibrary.org/obo/NCIT_C70962",
+            protocol_type = "http://purl.obolibrary.org/obo/PDRO_0000191",        
+            substance_type = "http://purl.obolibrary.org/obo/NCIT_C177929",      
+            concentration_type = "http://purl.obolibrary.org/obo/NCIT_C198143",
+            value_datatype = "xsd:float"
         ),
         "Medication": Template_OBO.build_entry(
             process_type = "http://purl.obolibrary.org/obo/NCIT_C70962",
-            protocol_type = "http://purl.obolibrary.org/obo/OBI_0000272",        
+            protocol_type = "http://purl.obolibrary.org/obo/PDRO_0010022",        
             substance_type = "http://purl.obolibrary.org/obo/NCIT_C177929",      
-            concentration_type = "http://purl.obolibrary.org/obo/NCIT_C25488",
+            concentration_type = "http://purl.obolibrary.org/obo/NCIT_C167190",
             value_datatype = "xsd:float"
         ),
         "Clinical_trial": Template_OBO.build_entry(

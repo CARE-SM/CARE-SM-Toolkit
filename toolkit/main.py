@@ -1,23 +1,24 @@
 import pandas as pd
 import os
 import logging
+import uuid
 from datetime import datetime
 from .template import TEMPLATE_MAP_OBO, TEMPLATE_MAP_SNOMED
 
 logging.basicConfig(level=logging.INFO)
 
-class Toolkit():
+class Toolkit:
     keywords_OBO = {
-        "Birthdate", "Birthyear", "Deathdate", "Sex", "Status", "First_visit"#, "Education",
-        "Questionnaire", "Diagnosis", "Phenotype", "Symptoms_onset", "Corporal", "Laboratory",
-        "Imaging", "Genetic", "Disability", "Medication", "Surgery", "Biobank", "Clinical_trial"
+        "Birthdate", "Birthyear", "Deathdate", "Sex","Country","Cause-death","Status", "First_visit",
+        "Questionnaire", "Diagnosis", "Phenotype", "Symptoms_onset", "Examination", "Laboratory",
+        "Genetic", "Disability", "Medication", "Surgery","Hospitalization", "Biobank", "Clinical_trial"
     }
+
     keywords_SNOMED = {
         "Birthdate", "Birthyear", "Deathdate", "Sex", "Status", "First_visit",
         "Questionnaire", "Diagnosis", "Phenotype", "Symptoms_onset", "Corporal", "Laboratory",
         "Imaging", "Genetic", "Disability", "Medication", "Surgery", "Clinical_trial"
     }
-
 
     columns = [
         "model", "pid", "event_id", "value", "age", "value_datatype", "valueIRI", "activity",
@@ -27,11 +28,18 @@ class Toolkit():
 
     drop_columns = ["value", "valueIRI", "target", "agent", "input", "activity", "unit"]
 
-    def milisec(self):
-
-        now = datetime.now()
-        now = now.strftime('%Y%m%d%H%M%S%f')
+    @staticmethod
+    def milisec():
+        now = datetime.now().strftime('%Y%m%d%H%M%S%f')
         return now
+
+    def get_template(self, template_type):
+        if template_type == "OBO":
+            return TEMPLATE_MAP_OBO
+        elif template_type == "SNOMED":
+            return TEMPLATE_MAP_SNOMED
+        else:
+            raise ValueError(f"Template type '{template_type}' not recognized.")
 
     def whole_method(self, folder_path, template_type):
         matching_files = self._find_matching_files(folder_path, template_type)
@@ -41,13 +49,7 @@ class Toolkit():
         final_df.to_csv(os.path.join(folder_path, "CARE.csv"), index=False)
 
     def _find_matching_files(self, folder_path, template_type):
-        if template_type == "OBO":
-            keywords = self.keywords_OBO
-        elif template_type == "SNOMED":
-            keywords = self.keywords_SNOMED
-        else:
-            raise ValueError(f"Template type '{template_type}' not recognized.")
-
+        keywords = self.keywords_OBO if template_type == "OBO" else self.keywords_SNOMED
         return [
             os.path.join(folder_path, file)
             for file in os.listdir(folder_path)
@@ -60,7 +62,7 @@ class Toolkit():
             return pd.DataFrame(columns=self.columns)
 
         df = self.check_status_column_names(df)
-        df = self.add_columns_from_template(df, filepath, template_type=template_type)
+        df = self.add_columns_from_template(df, filepath, template_type)
         df = self.value_edition(df)
         df = self.time_edition(df)
         df = self.clean_empty_rows(df, filepath)
@@ -80,38 +82,31 @@ class Toolkit():
         extra_cols = set(df.columns) - set(self.columns)
         if extra_cols:
             raise ValueError(f"Unexpected columns: {extra_cols}. Expected: {self.columns}")
-
         for col in self.columns:
             if col not in df.columns:
                 df[col] = pd.Series(dtype=object)
-
-        return df.where(pd.notnull(df), None)
+        return df
 
     def add_columns_from_template(self, df, filepath, template_type):
-        if template_type == "OBO":
-            template = TEMPLATE_MAP_OBO
-        elif template_type == "SNOMED":
-            template = TEMPLATE_MAP_SNOMED
-        else:
-            raise ValueError(f"Template type '{template_type}' not recognized.")
+        template = self.get_template(template_type)
         enriched_rows = []
 
         for _, row in df.iterrows():
             model = row['model']
             base = {"model": model}
             base.update(template.get(model, {}))
-            base.update({k: v for k, v in row.items() if v is not None})
-            enriched_rows.append(pd.DataFrame(base, index=[0]))
+            base.update({k: v for k, v in row.items() if pd.notnull(v)})
+            enriched_rows.append(base)
 
-        result = pd.concat(enriched_rows, ignore_index=True) if enriched_rows else pd.DataFrame(columns=self.columns)
+        result = pd.DataFrame(enriched_rows)
         logging.info(f"Transformed: {os.path.basename(filepath)}")
-        return result.where(pd.notnull(result), None)
+        return result
 
     def value_edition(self, df):
         def apply_value_types(row):
-            val = row['value']
-            model = row['model']
-            dtype = row['value_datatype']
+            model = row.get('model')
+            val = row.get('value')
+            dtype = row.get('value_datatype')
 
             if pd.notnull(val):
                 if dtype == 'xsd:string' and model != 'Genetic':
@@ -127,23 +122,23 @@ class Toolkit():
                 elif model == 'Genetic':
                     row['output_id_value'] = val
 
-            if pd.notnull(row.get('valueIRI')):
-                if model in ['Sex', 'Status', 'Diagnosis', 'Phenotype', 'Clinical_trial', 'Corporal']:
+            if 'valueIRI' in row and pd.notnull(row['valueIRI']):
+                if model in ['Sex', 'Status', 'Diagnosis', 'Phenotype', 'Clinical_trial', 'Examination', 'Country','Cause-death']:
                     row['attribute_type'] = row['valueIRI']
                 elif model in ['Imaging', 'Genetic']:
                     row['output_id'] = row['valueIRI']
 
-            if pd.notnull(row.get('target')):
-                if model in ['Symptoms_onset', 'Laboratory', 'Surgical', 'Imaging']:
+            if 'target' in row and pd.notnull(row['target']):
+                if model in self.keywords_OBO and model != 'Genetic':
                     row['target_type'] = row['target']
-                if model == 'Genetic':
+                elif model == 'Genetic':
                     row['attribute_type'] = row['target']
 
-            if pd.notnull(row.get('input')):
-                if model in ['Genetic', 'Laboratory', 'Imaging', 'Biobank']:
+            if 'input' in row and pd.notnull(row['input']):
+                if model in self.keywords_OBO:
                     row['input_type'] = row['input']
 
-            if pd.notnull(row.get('agent')):
+            if 'agent' in row and pd.notnull(row['agent']):
                 if model in ['Biobank', 'Clinical_trial']:
                     row['organization_id'] = row['agent']
                 elif model == 'Medication':
@@ -151,11 +146,12 @@ class Toolkit():
                 elif model == 'Genetic':
                     row['output_type'] = row['agent']
 
-            if pd.notnull(row.get('activity')):
-                row['specific_method_type'] = row['activity']
+            if 'activity' in row and pd.notnull(row['activity']):
+                if model in self.keywords_OBO:
+                    row['specific_method_type'] = row['activity']
 
-            if pd.notnull(row.get('unit')):
-                if model in ['Corporal', 'Laboratory', 'Questionnaire', 'Disability']:
+            if 'unit' in row and pd.notnull(row['unit']):
+                if model in ['Examination', 'Laboratory', 'Questionnaire', 'Disability']:
                     row['unit_type'] = row['unit']
                 elif model == 'Medication':
                     row['concentration_unit_type'] = row['unit']
@@ -169,8 +165,9 @@ class Toolkit():
         return df
 
     def clean_empty_rows(self, df, filepath):
+        required_cols = [col for col in ['value', 'valueIRI', 'activity', 'target', 'agent'] if col in df.columns]
         pre_clean_len = len(df)
-        df = df[~df[['value', 'valueIRI', 'activity', 'target', 'agent']].isnull().all(axis=1)]
+        df = df[~df[required_cols].isnull().all(axis=1)]
         removed = pre_clean_len - len(df)
         logging.info(f"{os.path.basename(filepath)}: Removed {removed} empty rows")
         return df
@@ -179,5 +176,6 @@ class Toolkit():
         return df.drop(columns=[col for col in self.drop_columns if col in df.columns], errors='ignore')
 
     def unique_id_generation(self, df):
-        df['uniqid'] = [self.milisec() for _ in df.index]
+        timestamp = self.milisec()
+        df['uniqid'] = [f"{timestamp}_{i}" for i in range(len(df))]
         return df

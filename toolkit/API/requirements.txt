@@ -1,4 +1,3 @@
-pyperseo
 pandas
 care-sm-toolkit
 fastapi
