@@ -77,7 +77,7 @@ TEMPLATE_MAP_OBO = {
             output_type="http://purl.obolibrary.org/obo/NCIT_C70856",
             value_datatype="xsd:date"
         ),
-        "Cause-death": Template_OBO.build_entry(
+        "Cause_death": Template_OBO.build_entry(
             process_type="http://purl.obolibrary.org/obo/NCIT_C142470",
             output_type="http://purl.obolibrary.org/obo/NCIT_C117544",
             value_datatype="xsd:string"

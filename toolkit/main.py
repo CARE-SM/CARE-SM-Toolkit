@@ -9,9 +9,9 @@ logging.basicConfig(level=logging.INFO)
 
 class Toolkit:
     keywords_OBO = {
-        "Birthdate", "Birthyear", "Deathdate", "Sex","Country","Cause-death","Status", "First_visit",
+        "Birthdate", "Birthyear", "Deathdate", "Sex", "Country", "Cause_death","Status", "First_visit",
         "Questionnaire", "Diagnosis", "Phenotype", "Symptoms_onset", "Examination", "Laboratory",
-        "Genetic", "Disability", "Medication", "Surgery","Hospitalization", "Biobank", "Clinical_trial"
+        "Genetic", "Disability", "Medication", "Prescription","Surgery","Hospitalization", "Biobank", "Clinical_trial"
     }
 
     keywords_SNOMED = {
@@ -123,7 +123,7 @@ class Toolkit:
                     row['output_id_value'] = val
 
             if 'valueIRI' in row and pd.notnull(row['valueIRI']):
-                if model in ['Sex', 'Status', 'Diagnosis', 'Phenotype', 'Clinical_trial', 'Examination', 'Country','Cause-death']:
+                if model in ['Sex', 'Status', 'Diagnosis', 'Phenotype', 'Clinical_trial', 'Examination', 'Country','Cause_death']:
                     row['attribute_type'] = row['valueIRI']
                 elif model in ['Imaging', 'Genetic']:
                     row['output_id'] = row['valueIRI']

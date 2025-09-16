@@ -1,0 +1,13 @@
+model,pid,startdate,enddate,event_id,activity
+Hospitalization,50012001,1998-06-30,1998-06-30,4449995521,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012004,2006-02-06,2006-02-06,4449995524,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012013,2008-10-25,2008-10-25,4449995533,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012015,2007-07-08,2007-07-08,4449995535,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012032,1995-10-20,1995-10-20,4449995552,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012038,1994-08-10,1994-08-10,4449995558,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012052,1994-07-20,1994-07-20,4449995572,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012053,2007-06-12,2007-06-12,4449995573,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012057,1997-03-12,1997-03-12,4449995577,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012071,1992-08-08,1992-08-08,4449995591,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012099,1997-05-04,1997-05-04,4449995619,http://purl.obolibrary.org/obo/NCIT_C51692
+Hospitalization,50012100,2000-08-05,2000-08-05,4449995620,http://purl.obolibrary.org/obo/NCIT_C51692
