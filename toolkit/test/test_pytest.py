@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 from toolkit.main import Toolkit
-from toolkit.template import Template
+# from toolkit.template import Template_OBO, TEMPLATE_MAP_OBO
 
 @pytest.fixture
 def toolkit():
@@ -37,12 +37,12 @@ def sample_df():
 
 def test_find_matching_files(toolkit, mocker):
     mocker.patch("os.listdir", return_value=["Sex.csv"])
-    result = toolkit._find_matching_files("/toolkit/data")
+    result = toolkit._find_matching_files("/toolkit/data", "OBO")
     assert result == [os.path.join("/toolkit/data/Sex.csv")]
 
 def test_find_matching_files_no_csv(toolkit, mocker):
     mocker.patch("os.listdir", return_value=["README.txt", "data.json"])
-    result = toolkit._find_matching_files("/toolkit/data")
+    result = toolkit._find_matching_files("/toolkit/data", "csv")
     assert result == []
 
 # import_your_data_from_csv
@@ -150,13 +150,24 @@ def test_delete_extra_columns_drops_specified(toolkit, sample_df):
 
 # unique_id_generation
 
+# def test_unique_id_generation(toolkit, sample_df):
+#     df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
+#     result = toolkit.unique_id_generation(df.copy())
+#     uniqid_value = result.loc[0, "uniqid"]
+#     assert isinstance(uniqid_value, str)
+#     assert uniqid_value.isdigit()
+#     assert len(uniqid_value) == 20
+
+
 def test_unique_id_generation(toolkit, sample_df):
     df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
     result = toolkit.unique_id_generation(df.copy())
     uniqid_value = result.loc[0, "uniqid"]
     assert isinstance(uniqid_value, str)
-    assert uniqid_value.isdigit()
-    assert len(uniqid_value) == 20
+    parts = uniqid_value.split("_")
+    assert len(parts) == 2
+    assert parts[0].isdigit()
+    assert parts[1].isdigit()
 
 # whole_method
 
@@ -164,5 +175,5 @@ def test_whole_method(toolkit, sample_df, mocker):
     mocker.patch.object(Toolkit, "_find_matching_files", return_value=["CARE.csv"])
     mocker.patch.object(Toolkit, "_process_file", return_value=sample_df.reindex(columns=Toolkit.columns, fill_value=None))
     mock_to_csv = mocker.patch("pandas.DataFrame.to_csv")
-    toolkit.whole_method("/toolkit/data")
+    toolkit.whole_method("/toolkit/data", "OBO")
     mock_to_csv.assert_called_once()

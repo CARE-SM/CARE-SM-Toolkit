@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 
 class Toolkit:
     keywords_OBO = {
-        "Birthdate", "Birthyear", "Deathdate", "Sex", "Country", "Cause_death","Status", "First_visit",
+        "Birthdate", "Birthyear", "Deathdate", "Sex", "Country", "Status", "First_visit",
         "Questionnaire", "Diagnosis", "Phenotype", "Symptoms_onset", "Examination", "Laboratory",
         "Genetic", "Disability", "Medication", "Prescription","Surgery","Hospitalization", "Biobank", "Clinical_trial"
     }
@@ -109,24 +109,26 @@ class Toolkit:
             dtype = row.get('value_datatype')
 
             if pd.notnull(val):
-                if dtype == 'xsd:string' and model != 'Genetic':
+                if dtype == 'xsd:string':
                     row['value_string'] = val
-                elif dtype == 'xsd:float' and model not in ['Medication', 'Genetic']:
+                elif dtype == 'xsd:float':
                     row['value_float'] = val
-                elif dtype == 'xsd:integer' and model not in ['Medication', 'Genetic']:
+                elif dtype == 'xsd:integer' :
                     row['value_integer'] = val
                 elif dtype == 'xsd:date':
                     row['value_date'] = val
-                elif model == 'Medication':
-                    row['concentration_value'] = val
-                elif model == 'Genetic':
-                    row['output_id_value'] = val
 
             if 'valueIRI' in row and pd.notnull(row['valueIRI']):
-                if model in ['Sex', 'Status', 'Diagnosis', 'Phenotype', 'Clinical_trial', 'Examination', 'Country','Cause_death']:
+                if model not in ['Genetic', 'Deathdate', 'Prescription', 'Medication','Questionnaire']:
                     row['attribute_type'] = row['valueIRI']
-                elif model in ['Imaging', 'Genetic']:
+                elif model in ['Genetic']:
                     row['output_id'] = row['valueIRI']
+                elif model == 'Deathdate':
+                    row['cause_type'] = row['valueIRI']
+                elif model in ['Prescription', 'Medication']:
+                    row['notation_id'] = row['valueIRI']
+                elif model == 'Questionnaire':
+                    row['protocol_id'] = row['valueIRI']
 
             if 'target' in row and pd.notnull(row['target']):
                 if model in self.keywords_OBO and model != 'Genetic':
@@ -140,21 +142,20 @@ class Toolkit:
 
             if 'agent' in row and pd.notnull(row['agent']):
                 if model in ['Biobank', 'Clinical_trial']:
-                    row['organization_id'] = row['agent']
-                elif model == 'Medication':
-                    row['substance_id'] = row['agent']
+                    row['organisation_id'] = row['agent']
                 elif model == 'Genetic':
-                    row['output_type'] = row['agent']
+                    row['functional_specification_type'] = row['agent']
+
+                elif model in ['Medication', 'Prescription']:
+                    row['notation_id'] = row['agent']
 
             if 'activity' in row and pd.notnull(row['activity']):
                 if model in self.keywords_OBO:
                     row['specific_method_type'] = row['activity']
 
             if 'unit' in row and pd.notnull(row['unit']):
-                if model in ['Examination', 'Laboratory', 'Questionnaire', 'Disability']:
+                if model in self.keywords_OBO:
                     row['unit_type'] = row['unit']
-                elif model == 'Medication':
-                    row['concentration_unit_type'] = row['unit']
 
             return row
 

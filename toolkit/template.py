@@ -7,25 +7,22 @@ class Template_OBO:
         role_type="http://purl.obolibrary.org/obo/OBI_0000093",
         process_type=None,
         attribute_type=None,
-        organization_id=None,
-        organization_type=None,
+        organisation_id=None,
+        organisation_type=None,
         input_type=None,
         target_type=None,
         output_type=None,
         output_id=None,
-        output_id_type=None,
-        output_id_value=None,
         unit_type=None,
         specific_method_type=None,
         protocol_type=None,
         protocol_id=None,
-        substance_type=None,
-        substance_id=None,
+        cause_type=None,
+        functional_specification_type=None,
         frequency_type=None,
         frequency_value=None,
-        concentration_type=None,
-        concentration_value=None,
-        concentration_unit_type=None,
+        notation_id=None,
+        notation_type=None,
         value_date=None,
         value_integer=None,
         value_string=None,
@@ -75,12 +72,8 @@ TEMPLATE_MAP_OBO = {
             process_type="http://purl.obolibrary.org/obo/NCIT_C142470",
             attribute_type="http://purl.obolibrary.org/obo/NCIT_C70810",
             output_type="http://purl.obolibrary.org/obo/NCIT_C70856",
+            protocol_type="http://purl.obolibrary.org/obo/NCIT_C163970",
             value_datatype="xsd:date"
-        ),
-        "Cause_death": Template_OBO.build_entry(
-            process_type="http://purl.obolibrary.org/obo/NCIT_C142470",
-            output_type="http://purl.obolibrary.org/obo/NCIT_C117544",
-            value_datatype="xsd:string"
         ),
         "First_visit": Template_OBO.build_entry(
             process_type="http://purl.obolibrary.org/obo/NCIT_C142470",
@@ -111,18 +104,26 @@ TEMPLATE_MAP_OBO = {
         ),
         "Phenotype": Template_OBO.build_entry(
             process_type="http://purl.obolibrary.org/obo/NCIT_C18020",
-            output_type="http://purl.obolibrary.org/obo/NCIT_C16977",
+            output_type="http://purl.obolibrary.org/obo/NCIT_C164607",
             value_datatype="xsd:string"
         ),
         "Genetic": Template_OBO.build_entry(
             process_type="http://purl.obolibrary.org/obo/NCIT_C15709",
             output_id_type="http://purl.obolibrary.org/obo/NCIT_C45766",
+            protocol_type="http://purl.obolibrary.org/obo/NCIT_C171178",
             value_datatype="xsd:string"
         ),
+        "Questionnaire": Template_OBO.build_entry(
+            process_type="http://purl.obolibrary.org/obo/NCIT_C95401",
+            output_type="http://purl.obolibrary.org/obo/NCIT_C91102",
+            protocol_type="http://purl.obolibrary.org/obo/NCIT_C73537",
+            value_datatype="xsd:float"
+        ),
         "Disability": Template_OBO.build_entry(
-            process_type="http://purl.obolibrary.org/obo/NCIT_C91102",
+            process_type="http://purl.obolibrary.org/obo/NCIT_C20993",
             attribute_type="http://purl.obolibrary.org/obo/NCIT_C21007",
-            output_type="http://purl.obolibrary.org/obo/NCIT_C70856",
+            output_type="http://purl.obolibrary.org/obo/NCIT_C91102",
+            protocol_type="http://purl.obolibrary.org/obo/NCIT_C73537",
             value_datatype="xsd:float"
         ),
         "Examination": Template_OBO.build_entry(
@@ -136,12 +137,6 @@ TEMPLATE_MAP_OBO = {
             protocol_type="http://purl.obolibrary.org/obo/OBI_0000272",
             value_datatype="xsd:float"
         ),
-        # "Imaging": Template_OBO.build_entry(
-        #     process_type = "http://purl.obolibrary.org/obo/NCIT_C17369",
-        #     output_type = "http://purl.obolibrary.org/obo/NCIT_C70856", 
-        #     output_id_type = "http://purl.obolibrary.org/obo/NCIT_C81289",
-        #     value_datatype = "xsd:string"
-        # ),
         "Surgery": Template_OBO.build_entry(
             process_type = "http://purl.obolibrary.org/obo/NCIT_C15329",
             value_datatype = "xsd:string"
@@ -153,40 +148,31 @@ TEMPLATE_MAP_OBO = {
         "Prescription": Template_OBO.build_entry(
             process_type = "http://purl.obolibrary.org/obo/NCIT_C70962",
             protocol_type = "http://purl.obolibrary.org/obo/PDRO_0000191",        
-            substance_type = "http://purl.obolibrary.org/obo/NCIT_C177929",      
-            concentration_type = "http://purl.obolibrary.org/obo/NCIT_C198143",
+            notation_type = "http://purl.obolibrary.org/obo/NCIT_C177929",      
+            output_type = "http://purl.obolibrary.org/obo/NCIT_C198143",
             value_datatype = "xsd:float"
         ),
         "Medication": Template_OBO.build_entry(
             process_type = "http://purl.obolibrary.org/obo/NCIT_C70962",
             protocol_type = "http://purl.obolibrary.org/obo/PDRO_0010022",        
-            substance_type = "http://purl.obolibrary.org/obo/NCIT_C177929",      
-            concentration_type = "http://purl.obolibrary.org/obo/NCIT_C167190",
+            notation_type = "http://purl.obolibrary.org/obo/NCIT_C177929",      
+            output_type = "http://purl.obolibrary.org/obo/NCIT_C167190",
             value_datatype = "xsd:float"
         ),
         "Clinical_trial": Template_OBO.build_entry(
             process_type = "http://purl.obolibrary.org/obo/NCIT_C71104",
-            organization_type = "http://purl.obolibrary.org/obo/NCIT_C16696",
+            organisation_type = "http://purl.obolibrary.org/obo/NCIT_C16696",
             output_type = "http://purl.obolibrary.org/obo/NCIT_C115575", 
             value_datatype = "xsd:string"
         ),
         "Biobank": Template_OBO.build_entry(
             process_type = "http://purl.obolibrary.org/obo/OMIABIS_0000061",
-            organization_type = "http://purl.obolibrary.org/obo/OBIB_0000616",
+            organisation_type = "http://purl.obolibrary.org/obo/OBIB_0000616",
             output_type = "http://purl.obolibrary.org/obo/NCIT_C115570", 
             output_id_type = "http://purl.obolibrary.org/obo/NCIT_C25364",
             value_datatype = "xsd:string"
         ),
-        # "Education": Template_OBO.build_entry(
-        #     process_type = "http://purl.obolibrary.org/obo/NCIT_C142470",
-        #     attribute_type = "http://purl.obolibrary.org/obo/NCIT_C17953",
-        #     output_type = "http://purl.obolibrary.org/obo/NCIT_C70856", 
-        #     protocol_type = "http://purl.obolibrary.org/obo/OBI_0000093",        
-        #     protocol_id = "https://www.wikidata.org/wiki/Q1390351", 
-        #     value_datatype = "xsd:integer"
-        # )
     }
-
 
 class Template_SNOMED:
 
@@ -195,25 +181,22 @@ class Template_SNOMED:
         role_type="http://snomed.info/id/116154003",
         process_type=None,
         attribute_type=None,
-        organization_id=None,
-        organization_type=None,
+        organisation_id=None,
+        organisation_type=None,
         input_type=None,
         target_type=None,
         output_type=None,
         output_id=None,
-        output_id_type=None,
-        output_id_value=None,
         unit_type=None,
         specific_method_type=None,
         protocol_type=None,
         protocol_id=None,
-        substance_type=None,
-        substance_id=None,
+        cause_type=None,
+        functional_specification_type=None,
         frequency_type=None,
         frequency_value=None,
-        concentration_type=None,
-        concentration_value=None,
-        concentration_unit_type=None,
+        notation_id=None,
+        notation_type=None,
         value_date=None,
         value_integer=None,
         value_string=None,
@@ -312,12 +295,6 @@ TEMPLATE_MAP_SNOMED = {
             output_type="http://snomed.info/id/275924004",
             protocol_type="http://snomed.info/id/258049002",
             value_datatype="xsd:float"
-        ),
-        "Imaging": Template_SNOMED.build_entry(
-            process_type = "http://snomed.info/id/363679005",
-            output_type = "http://snomed.info/id/405045001", 
-            output_id_type = "http://snomed.info/id/118522005",
-            value_datatype = "xsd:string"
         ),
         "Surgery": Template_SNOMED.build_entry(
             process_type = "http://snomed.info/id/387713003",
