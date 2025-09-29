@@ -119,20 +119,25 @@ class Toolkit:
                     row['value_date'] = val
 
             if 'valueIRI' in row and pd.notnull(row['valueIRI']):
-                if model not in ['Genetic', 'Deathdate', 'Prescription', 'Medication','Questionnaire']:
+                if model not in ['Genetic', 'Deathdate', 'Prescription', 'Medication','Questionnaire','Disability']:
                     row['attribute_type'] = row['valueIRI']
+
                 elif model in ['Genetic']:
-                    row['output_id'] = row['valueIRI']
+                    row['value_id'] = row['valueIRI']
+
                 elif model == 'Deathdate':
                     row['cause_type'] = row['valueIRI']
+
                 elif model in ['Prescription', 'Medication']:
                     row['notation_id'] = row['valueIRI']
-                elif model == 'Questionnaire':
-                    row['protocol_id'] = row['valueIRI']
+
+                elif model in ['Questionnaire', 'Disability']: #TODO review
+                    row['specific_method_type'] = row['valueIRI']
 
             if 'target' in row and pd.notnull(row['target']):
                 if model in self.keywords_OBO and model != 'Genetic':
                     row['target_type'] = row['target']
+
                 elif model == 'Genetic':
                     row['attribute_type'] = row['target']
 
@@ -143,6 +148,7 @@ class Toolkit:
             if 'agent' in row and pd.notnull(row['agent']):
                 if model in ['Biobank', 'Clinical_trial']:
                     row['organisation_id'] = row['agent']
+
                 elif model == 'Genetic':
                     row['functional_specification_type'] = row['agent']
 
