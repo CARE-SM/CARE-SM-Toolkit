@@ -5,19 +5,19 @@ import uuid
 from datetime import datetime
 from .template import TEMPLATE_MAP_OBO, TEMPLATE_MAP_SNOMED
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, force=True)
 
 class Toolkit:
     keywords_OBO = {
         "Birthdate", "Birthyear", "Deathdate", "Sex", "Country", "Status", "First_visit",
         "Questionnaire", "Diagnosis", "Phenotype", "Symptoms_onset", "Examination", "Laboratory",
-        "Genetic", "Disability", "Medication", "Prescription","Surgery","Hospitalization", "Biobank", "Clinical_trial"
+        "Genetic", "Disability", "Prescription", "Medication","Surgery","Hospitalization", "Biobank", "Clinical_trial"
     }
 
     keywords_SNOMED = {
-        "Birthdate", "Birthyear", "Deathdate", "Sex", "Status", "First_visit",
-        "Questionnaire", "Diagnosis", "Phenotype", "Symptoms_onset", "Corporal", "Laboratory",
-        "Imaging", "Genetic", "Disability", "Medication", "Surgery", "Clinical_trial"
+        "Birthdate", "Birthyear", "Deathdate", "Sex", "Country", "Status", "First_visit",
+        "Questionnaire", "Diagnosis", "Phenotype", "Symptoms_onset", "Examination", "Laboratory",
+        "Disability", "Prescription", "Medication","Surgery","Hospitalization", "Biobank", "Clinical_trial"
     }
 
     columns = [
@@ -27,6 +27,10 @@ class Toolkit:
     ]
 
     drop_columns = ["value", "valueIRI", "target", "agent", "input", "activity", "unit"]
+
+    # Columns that must stay as strings (to avoid .0 problem)
+    # Columns that could contains SNOMED code without prefix
+    columns_to_check = ["valueIRI", "activity", "unit", "input", "target", "frequency_type", "agent"]
 
     @staticmethod
     def milisec():
@@ -63,6 +67,7 @@ class Toolkit:
 
         df = self.check_status_column_names(df)
         df = self.add_columns_from_template(df, filepath, template_type)
+        df = self.snomed_normalization(df, template_type, filepath)
         df = self.value_edition(df)
         df = self.time_edition(df)
         df = self.clean_empty_rows(df, filepath)
@@ -71,7 +76,12 @@ class Toolkit:
 
     def import_your_data_from_csv(self, filepath):
         try:
-            df = pd.read_csv(filepath)
+            # Read CSV with dtype=str for SNOMED-like columns
+            df = pd.read_csv(
+                filepath,
+                dtype={col: str for col in self.columns_to_check if col in pd.read_csv(filepath, nrows=0).columns}
+            )
+            
             logging.info(f"Imported CSV: {os.path.basename(filepath)}")
             return df
         except Exception as e:
@@ -101,6 +111,45 @@ class Toolkit:
         result = pd.DataFrame(enriched_rows)
         logging.info(f"Transformed: {os.path.basename(filepath)}")
         return result
+    
+    def snomed_normalization(self, df, template_type, filepath=None):
+            """
+            Normalize SNOMED codes in selected columns if template_type is SNOMED.
+            Adds missing SNOMED prefix, leaves valid/empty cells, logs unexpected values.
+            """
+            if template_type != "SNOMED":
+                return df
+
+            SNOMED_PREFIX = "http://snomed.info/id/"
+
+            for col in self.columns_to_check:
+                if col not in df.columns:
+                    continue
+
+                def normalize_cell(val, idx, colname=col):
+                    if pd.isna(val) or str(val).strip() == "":
+                        return val  # leave empty
+
+                    val_str = str(val).strip()
+
+                    # Case 1: already full SNOMED URI
+                    if val_str.startswith(SNOMED_PREFIX):
+                        return val_str
+
+                    # Case 2: numeric code without prefix
+                    if val_str.isdigit():
+                        return SNOMED_PREFIX + val_str
+
+                    # Case 3: unexpected content
+                    logging.warning(
+                        f"[{os.path.basename(filepath) if filepath else 'unknown file'}] "
+                        f"Row {idx}, column '{colname}': unexpected non-SNOMED value -> {val_str}"
+                    )
+                    return val_str
+
+                df[col] = [normalize_cell(val, idx) for idx, val in enumerate(df[col])]
+
+            return df
 
     def value_edition(self, df):
         def apply_value_types(row):
@@ -168,7 +217,10 @@ class Toolkit:
         return df.apply(apply_value_types, axis=1)
 
     def time_edition(self, df):
-        df['enddate'] = df['enddate'].where(pd.notnull(df['enddate']), df['startdate'])
+        if 'startdate' in df.columns and 'enddate' in df.columns:
+            df['enddate'] = df['enddate'].where(pd.notnull(df['enddate']), df['startdate'])
+        elif 'enddate' in df.columns:
+            df['enddate'] = df['enddate']
         return df
 
     def clean_empty_rows(self, df, filepath):
