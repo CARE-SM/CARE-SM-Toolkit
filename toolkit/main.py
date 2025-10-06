@@ -236,5 +236,5 @@ class Toolkit:
 
     def unique_id_generation(self, df):
         timestamp = self.milisec()
-        df['uniqid'] = [f"{timestamp}_{i}" for i in range(len(df))]
+        df['uniqid'] = [f"{timestamp}{i}" for i in range(len(df))]
         return df
