@@ -148,26 +148,14 @@ def test_delete_extra_columns_drops_specified(toolkit, sample_df):
     assert "to_be_dropped" not in deleted.columns
     Toolkit.drop_columns.remove("to_be_dropped")
 
-# unique_id_generation
-
-# def test_unique_id_generation(toolkit, sample_df):
-#     df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
-#     result = toolkit.unique_id_generation(df.copy())
-#     uniqid_value = result.loc[0, "uniqid"]
-#     assert isinstance(uniqid_value, str)
-#     assert uniqid_value.isdigit()
-#     assert len(uniqid_value) == 20
-
-
 def test_unique_id_generation(toolkit, sample_df):
     df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
     result = toolkit.unique_id_generation(df.copy())
     uniqid_value = result.loc[0, "uniqid"]
-    assert isinstance(uniqid_value, str)
-    parts = uniqid_value.split("_")
-    assert len(parts) == 2
-    assert parts[0].isdigit()
-    assert parts[1].isdigit()
+
+    assert isinstance(uniqid_value, str), "uniqid should be a string"
+    assert uniqid_value.isdigit(), f"uniqid should contain only digits, got {uniqid_value}"
+    assert len(uniqid_value) > 20, f"uniqid seems too short: {uniqid_value}"
 
 # whole_method
 
