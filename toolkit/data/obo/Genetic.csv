@@ -1,4 +1,4 @@
-model,pid,value_datatype,startdate,enddate,event_id,value,valueIRI,target,activity
+model,pid,value_datatype,startdate,enddate,event_id,value,valueIRI,agent,activity
 Genetic,50012001,xsd:string,1998-06-30,1998-06-30,788455685,NM_000341.3(SLC3A1):c.-82T>G,https://www.ncbi.nlm.nih.gov/clinvar/variation/897001/,http://purl.obolibrary.org/obo/GENO_0000136,http://purl.obolibrary.org/obo/NCIT_C165219
 Genetic,50012001,xsd:string,1998-06-30,1998-06-30,788455685,6015560,https://www.omim.org/entry/601556,http://purl.obolibrary.org/obo/GENO_0000136,http://purl.obolibrary.org/obo/NCIT_C165219
 Genetic,50012002,xsd:string,2008-07-10,2008-07-10,788455686,NM_000341.3(SLC3A1):c.-82T>G,https://www.ncbi.nlm.nih.gov/clinvar/variation/897001/,http://purl.obolibrary.org/obo/GENO_0000136,http://purl.obolibrary.org/obo/NCIT_C165219

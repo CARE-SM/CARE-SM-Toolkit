@@ -1,0 +1,101 @@
+pid,valueIRI,value,startdate,event_id,model
+000001,,,,,Phenotype
+000002,,,,,Phenotype
+000003,,,,,Phenotype
+000004,http://snomed.info/id/37183000,"Cystinuria, type 1",2014-07-18,1000014,Phenotype
+000005,http://snomed.info/id/770414008,Alport syndrome,2019-04-26,1000019,Phenotype
+000006,http://snomed.info/id/74400008,Appendicitis,2020-04-28,1000025,Phenotype
+000007,http://snomed.info/id/770414008,Alport syndrome,2025-12-15,1000031,Phenotype
+000008,,,,,Phenotype
+000009,http://snomed.info/id/37183000,"Cystinuria, type 1",2010-11-05,1000040,Phenotype
+000010,,,,,Phenotype
+000011,,,,,Phenotype
+000012,,,,,Phenotype
+000013,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,2025-12-15,1000058,Phenotype
+000014,,,,,Phenotype
+000015,http://snomed.info/id/770414008,Alport syndrome,2025-08-16,1000066,Phenotype
+000016,http://snomed.info/id/37183000,"Cystinuria, type 1",2025-12-15,1000070,Phenotype
+000017,,,,,Phenotype
+000018,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,2010-12-04,1000077,Phenotype
+000019,,,,,Phenotype
+000020,,,,,Phenotype
+000021,,,,,Phenotype
+000022,,,,,Phenotype
+000023,,,,,Phenotype
+000024,http://snomed.info/id/770414008,Alport syndrome,2025-12-15,1000102,Phenotype
+000025,http://snomed.info/id/35455006,Acute tubular necrosis,2024-06-24,1000107,Phenotype
+000026,http://snomed.info/id/907460000,Polycystic kidney disease,2014-10-27,1000112,Phenotype
+000027,,,,,Phenotype
+000028,,,,,Phenotype
+000029,,,,,Phenotype
+000030,,,,,Phenotype
+000031,,,,,Phenotype
+000032,,,,,Phenotype
+000033,,,,,Phenotype
+000034,,,,,Phenotype
+000035,,,,,Phenotype
+000036,,,,,Phenotype
+000037,http://snomed.info/id/770414008,Alport syndrome,2023-04-08,1000161,Phenotype
+000038,,,,,Phenotype
+000039,http://snomed.info/id/37183000,"Cystinuria, type 1",2025-12-15,1000170,Phenotype
+000040,,,,,Phenotype
+000041,,,,,Phenotype
+000042,,,,,Phenotype
+000043,,,,,Phenotype
+000044,,,,,Phenotype
+000045,,,,,Phenotype
+000046,,,,,Phenotype
+000047,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,2025-03-14,1000207,Phenotype
+000048,,,,,Phenotype
+000049,,,,,Phenotype
+000050,,,,,Phenotype
+000051,,,,,Phenotype
+000052,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,2025-12-15,1000230,Phenotype
+000053,,,,,Phenotype
+000054,,,,,Phenotype
+000055,,,,,Phenotype
+000056,http://snomed.info/id/37183000,"Cystinuria, type 1",2016-06-29,1000249,Phenotype
+000057,,,,,Phenotype
+000058,,,,,Phenotype
+000059,,,,,Phenotype
+000060,,,,,Phenotype
+000061,,,,,Phenotype
+000062,,,,,Phenotype
+000063,,,,,Phenotype
+000064,,,,,Phenotype
+000065,,,,,Phenotype
+000066,,,,,Phenotype
+000067,,,,,Phenotype
+000068,,,,,Phenotype
+000069,,,,,Phenotype
+000070,,,,,Phenotype
+000071,,,,,Phenotype
+000072,,,,,Phenotype
+000073,,,,,Phenotype
+000074,,,,,Phenotype
+000075,http://snomed.info/id/907460000,Polycystic kidney disease,2025-11-14,1000332,Phenotype
+000076,,,,,Phenotype
+000077,,,,,Phenotype
+000078,http://snomed.info/id/770414008,Alport syndrome,2004-02-04,1000345,Phenotype
+000079,,,,,Phenotype
+000080,http://snomed.info/id/770414008,Alport syndrome,2022-08-09,1000355,Phenotype
+000081,,,,,Phenotype
+000082,,,,,Phenotype
+000083,,,,,Phenotype
+000084,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,2025-12-15,1000375,Phenotype
+000085,http://snomed.info/id/74400008,Appendicitis,2021-09-28,1000381,Phenotype
+000086,,,,,Phenotype
+000087,,,,,Phenotype
+000088,,,,,Phenotype
+000089,,,,,Phenotype
+000090,http://snomed.info/id/35455006,Acute tubular necrosis,2001-09-24,1000402,Phenotype
+000091,,,,,Phenotype
+000092,,,,,Phenotype
+000093,,,,,Phenotype
+000094,,,,,Phenotype
+000095,,,,,Phenotype
+000096,,,,,Phenotype
+000097,,,,,Phenotype
+000098,,,,,Phenotype
+000099,,,,,Phenotype
+000100,,,,,Phenotype

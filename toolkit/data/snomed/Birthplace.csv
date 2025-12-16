@@ -1,0 +1,101 @@
+pid,valueIRI,value,model
+000001,http://snomed.info/id/223370001,Brazil,Birthplace
+000002,http://snomed.info/id/223366009,Germany,Birthplace
+000003,http://snomed.info/id/223371002,Mexico,Birthplace
+000004,http://snomed.info/id/223366009,Germany,Birthplace
+000005,http://snomed.info/id/223371002,Mexico,Birthplace
+000006,http://snomed.info/id/223370001,Brazil,Birthplace
+000007,http://snomed.info/id/223374005,China,Birthplace
+000008,http://snomed.info/id/223369002,Spain,Birthplace
+000009,http://snomed.info/id/223374005,China,Birthplace
+000010,http://snomed.info/id/223369002,Spain,Birthplace
+000011,http://snomed.info/id/223368005,France,Birthplace
+000012,http://snomed.info/id/223374005,China,Birthplace
+000013,http://snomed.info/id/223374005,China,Birthplace
+000014,http://snomed.info/id/223368005,France,Birthplace
+000015,http://snomed.info/id/223370001,Brazil,Birthplace
+000016,http://snomed.info/id/22335008,United States of America,Birthplace
+000017,http://snomed.info/id/223374005,China,Birthplace
+000018,http://snomed.info/id/22335008,United States of America,Birthplace
+000019,http://snomed.info/id/223372009,India,Birthplace
+000020,http://snomed.info/id/223370001,Brazil,Birthplace
+000021,http://snomed.info/id/223372009,India,Birthplace
+000022,http://snomed.info/id/223369002,Spain,Birthplace
+000023,http://snomed.info/id/223367000,United Kingdom,Birthplace
+000024,http://snomed.info/id/223373004,Nigeria,Birthplace
+000025,http://snomed.info/id/223366009,Germany,Birthplace
+000026,http://snomed.info/id/223370001,Brazil,Birthplace
+000027,http://snomed.info/id/223369002,Spain,Birthplace
+000028,http://snomed.info/id/223371002,Mexico,Birthplace
+000029,http://snomed.info/id/223366009,Germany,Birthplace
+000030,http://snomed.info/id/22335008,United States of America,Birthplace
+000031,http://snomed.info/id/223373004,Nigeria,Birthplace
+000032,http://snomed.info/id/223366009,Germany,Birthplace
+000033,http://snomed.info/id/223367000,United Kingdom,Birthplace
+000034,http://snomed.info/id/223370001,Brazil,Birthplace
+000035,http://snomed.info/id/223372009,India,Birthplace
+000036,http://snomed.info/id/223367000,United Kingdom,Birthplace
+000037,http://snomed.info/id/223366009,Germany,Birthplace
+000038,http://snomed.info/id/223368005,France,Birthplace
+000039,http://snomed.info/id/223368005,France,Birthplace
+000040,http://snomed.info/id/223369002,Spain,Birthplace
+000041,http://snomed.info/id/223374005,China,Birthplace
+000042,http://snomed.info/id/223371002,Mexico,Birthplace
+000043,http://snomed.info/id/223366009,Germany,Birthplace
+000044,http://snomed.info/id/223373004,Nigeria,Birthplace
+000045,http://snomed.info/id/22335008,United States of America,Birthplace
+000046,http://snomed.info/id/223371002,Mexico,Birthplace
+000047,http://snomed.info/id/223374005,China,Birthplace
+000048,http://snomed.info/id/223368005,France,Birthplace
+000049,http://snomed.info/id/223367000,United Kingdom,Birthplace
+000050,http://snomed.info/id/223370001,Brazil,Birthplace
+000051,http://snomed.info/id/223372009,India,Birthplace
+000052,http://snomed.info/id/223370001,Brazil,Birthplace
+000053,http://snomed.info/id/223373004,Nigeria,Birthplace
+000054,http://snomed.info/id/223372009,India,Birthplace
+000055,http://snomed.info/id/223373004,Nigeria,Birthplace
+000056,http://snomed.info/id/223366009,Germany,Birthplace
+000057,http://snomed.info/id/223373004,Nigeria,Birthplace
+000058,http://snomed.info/id/223366009,Germany,Birthplace
+000059,http://snomed.info/id/223368005,France,Birthplace
+000060,http://snomed.info/id/22335008,United States of America,Birthplace
+000061,http://snomed.info/id/223371002,Mexico,Birthplace
+000062,http://snomed.info/id/223367000,United Kingdom,Birthplace
+000063,http://snomed.info/id/223370001,Brazil,Birthplace
+000064,http://snomed.info/id/223369002,Spain,Birthplace
+000065,http://snomed.info/id/223373004,Nigeria,Birthplace
+000066,http://snomed.info/id/223370001,Brazil,Birthplace
+000067,http://snomed.info/id/223368005,France,Birthplace
+000068,http://snomed.info/id/223370001,Brazil,Birthplace
+000069,http://snomed.info/id/223368005,France,Birthplace
+000070,http://snomed.info/id/223371002,Mexico,Birthplace
+000071,http://snomed.info/id/223369002,Spain,Birthplace
+000072,http://snomed.info/id/223374005,China,Birthplace
+000073,http://snomed.info/id/223366009,Germany,Birthplace
+000074,http://snomed.info/id/223370001,Brazil,Birthplace
+000075,http://snomed.info/id/223372009,India,Birthplace
+000076,http://snomed.info/id/223373004,Nigeria,Birthplace
+000077,http://snomed.info/id/223373004,Nigeria,Birthplace
+000078,http://snomed.info/id/223369002,Spain,Birthplace
+000079,http://snomed.info/id/223371002,Mexico,Birthplace
+000080,http://snomed.info/id/22335008,United States of America,Birthplace
+000081,http://snomed.info/id/223372009,India,Birthplace
+000082,http://snomed.info/id/223374005,China,Birthplace
+000083,http://snomed.info/id/223367000,United Kingdom,Birthplace
+000084,http://snomed.info/id/223371002,Mexico,Birthplace
+000085,http://snomed.info/id/223372009,India,Birthplace
+000086,http://snomed.info/id/223366009,Germany,Birthplace
+000087,http://snomed.info/id/223371002,Mexico,Birthplace
+000088,http://snomed.info/id/22335008,United States of America,Birthplace
+000089,http://snomed.info/id/223372009,India,Birthplace
+000090,http://snomed.info/id/223371002,Mexico,Birthplace
+000091,http://snomed.info/id/223371002,Mexico,Birthplace
+000092,http://snomed.info/id/223368005,France,Birthplace
+000093,http://snomed.info/id/223371002,Mexico,Birthplace
+000094,http://snomed.info/id/223372009,India,Birthplace
+000095,http://snomed.info/id/223373004,Nigeria,Birthplace
+000096,http://snomed.info/id/223366009,Germany,Birthplace
+000097,http://snomed.info/id/223367000,United Kingdom,Birthplace
+000098,http://snomed.info/id/223369002,Spain,Birthplace
+000099,http://snomed.info/id/223368005,France,Birthplace
+000100,http://snomed.info/id/223371002,Mexico,Birthplace

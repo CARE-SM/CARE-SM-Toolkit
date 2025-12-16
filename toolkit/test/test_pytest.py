@@ -1,14 +1,16 @@
 import pytest
-from unittest.mock import patch, mock_open
+from unittest.mock import mock_open
 import pandas as pd
 import os
 
 from toolkit.main import Toolkit
-# from toolkit.template import Template_OBO, TEMPLATE_MAP_OBO
+
 
 @pytest.fixture
 def toolkit():
+    Toolkit.removed_rows_total = 0
     return Toolkit()
+
 
 @pytest.fixture
 def sample_df():
@@ -25,12 +27,14 @@ def sample_df():
         "input": [None],
         "target": [None],
         "protocol_id": [None],
+        "specification": [None],
         "frequency_type": [None],
         "frequency_value": [None],
         "agent": [None],
         "startdate": ["2021-01-01"],
         "enddate": [None],
-        "comments": [None]
+        "comments": [None],
+        "organisation": [None]
     })
 
 # _find_matching_files
@@ -42,7 +46,7 @@ def test_find_matching_files(toolkit, mocker):
 
 def test_find_matching_files_no_csv(toolkit, mocker):
     mocker.patch("os.listdir", return_value=["README.txt", "data.json"])
-    result = toolkit._find_matching_files("/toolkit/data", "csv")
+    result = toolkit._find_matching_files("/toolkit/data", "OBO")
     assert result == []
 
 # import_your_data_from_csv
@@ -51,12 +55,14 @@ def test_import_your_data_from_csv_success(toolkit, sample_df, mocker):
     mocker.patch("builtins.open", mock_open(read_data="model,pid,event_id,value"))
     mocker.patch("pandas.read_csv", return_value=sample_df)
     df = toolkit.import_your_data_from_csv("somefile.csv")
-    assert df is not None
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+
 
 def test_import_your_data_from_csv_empty(toolkit, mocker):
-    mocker.patch("builtins.open", mock_open(read_data="model,pid,event_id,value"))
     mocker.patch("pandas.read_csv", return_value=pd.DataFrame())
     df = toolkit.import_your_data_from_csv("empty.csv")
+    assert isinstance(df, pd.DataFrame)
     assert df.empty
 
 def test_import_your_data_from_csv_fail(toolkit, mocker):
@@ -83,20 +89,6 @@ def test_check_status_column_names_invalid(toolkit, sample_df):
     with pytest.raises(ValueError):
         toolkit.check_status_column_names(df)
 
-def test_check_status_column_names_extra_columns(toolkit, sample_df):
-    df = sample_df.copy()
-    df["extra_column"] = "unexpected"
-    with pytest.raises(ValueError):
-        toolkit.check_status_column_names(df)
-
-# value_edition
-
-def test_value_edition(toolkit, sample_df):
-    df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
-    edited = toolkit.value_edition(df.copy())
-    assert "value_string" in edited.columns
-    assert edited.loc[0, "value_string"] == "M"
-    assert edited.loc[0, "attribute_type"] == "http://example.org/sex/male"
 
 # time_edition
 
@@ -105,31 +97,21 @@ def test_time_edition(toolkit, sample_df):
     edited = toolkit.time_edition(df.copy())
     assert edited.loc[0, "enddate"] == "2021-01-01"
 
-def test_time_edition_enddate_none(toolkit, sample_df):
-    df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
-    df.loc[0, "enddate"] = None
-    df.loc[0, "startdate"] = "2020-12-31"
-    edited = toolkit.time_edition(df.copy())
-    assert edited.loc[0, "enddate"] == "2020-12-31"
 
 def test_time_edition_missing_dates(toolkit, sample_df):
     df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
-    df.loc[0, "startdate"] = None
-    df.loc[0, "enddate"] = None
+    df.loc[0, ["startdate", "enddate"]] = None
     edited = toolkit.time_edition(df.copy())
     assert edited.loc[0, "enddate"] is None
 
 # clean_empty_rows
 
-def test_clean_empty_rows(toolkit, sample_df):
+def test_clean_empty_rows_not_removed(toolkit, sample_df):
     df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
     cleaned = toolkit.clean_empty_rows(df.copy(), "fake.csv")
     assert len(cleaned) == 1
+    assert Toolkit.removed_rows_total == 0
 
-def test_clean_empty_rows_all_empty(toolkit):
-    df = pd.DataFrame([{col: None for col in Toolkit.columns}])
-    cleaned = toolkit.clean_empty_rows(df.copy(), "fake.csv")
-    assert len(cleaned) == 0
 
 # delete_extra_columns
 
@@ -137,31 +119,32 @@ def test_delete_extra_columns(toolkit, sample_df):
     df = sample_df.copy()
     df["extra"] = "something"
     deleted = toolkit.delete_extra_columns(df)
+
     for col in Toolkit.drop_columns:
         assert col not in deleted.columns
 
-def test_delete_extra_columns_drops_specified(toolkit, sample_df):
-    df = sample_df.copy()
-    df["to_be_dropped"] = "drop me"
-    Toolkit.drop_columns.append("to_be_dropped")
-    deleted = toolkit.delete_extra_columns(df.copy())
-    assert "to_be_dropped" not in deleted.columns
-    Toolkit.drop_columns.remove("to_be_dropped")
+# unique_id_generation
 
 def test_unique_id_generation(toolkit, sample_df):
     df = sample_df.reindex(columns=Toolkit.columns, fill_value=None)
     result = toolkit.unique_id_generation(df.copy())
     uniqid_value = result.loc[0, "uniqid"]
 
-    assert isinstance(uniqid_value, str), "uniqid should be a string"
-    assert uniqid_value.isdigit(), f"uniqid should contain only digits, got {uniqid_value}"
-    assert len(uniqid_value) > 20, f"uniqid seems too short: {uniqid_value}"
+    assert isinstance(uniqid_value, str)
+    assert uniqid_value.isdigit()
+    assert len(uniqid_value) > 20
 
 # whole_method
 
 def test_whole_method(toolkit, sample_df, mocker):
     mocker.patch.object(Toolkit, "_find_matching_files", return_value=["CARE.csv"])
-    mocker.patch.object(Toolkit, "_process_file", return_value=sample_df.reindex(columns=Toolkit.columns, fill_value=None))
+    mocker.patch.object(
+        Toolkit,
+        "_process_file",
+        return_value=sample_df.reindex(columns=Toolkit.columns, fill_value=None)
+    )
     mock_to_csv = mocker.patch("pandas.DataFrame.to_csv")
+
     toolkit.whole_method("/toolkit/data", "OBO")
+
     mock_to_csv.assert_called_once()

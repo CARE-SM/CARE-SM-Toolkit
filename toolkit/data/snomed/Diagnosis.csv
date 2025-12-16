@@ -1,0 +1,101 @@
+pid,startdate,valueIRI,value,event_id,model
+000001,2025-12-15,http://snomed.info/id/37183000,"Cystinuria, type 1",1000005,Diagnosis
+000002,,,,,Diagnosis
+000003,,,,,Diagnosis
+000004,2017-03-01,http://snomed.info/id/907460000,Polycystic kidney disease,1000016,Diagnosis
+000005,2019-12-21,http://snomed.info/id/770414008,Alport syndrome,1000021,Diagnosis
+000006,1987-03-19,http://snomed.info/id/770414008,Alport syndrome,1000028,Diagnosis
+000007,,,,,Diagnosis
+000008,,,,,Diagnosis
+000009,,,,,Diagnosis
+000010,2015-11-23,http://snomed.info/id/37183000,"Cystinuria, type 1",1000047,Diagnosis
+000011,,,,,Diagnosis
+000012,2025-12-15,http://snomed.info/id/35455006,Acute tubular necrosis,1000055,Diagnosis
+000013,,,,,Diagnosis
+000014,,,,,Diagnosis
+000015,,,,,Diagnosis
+000016,,,,,Diagnosis
+000017,,,,,Diagnosis
+000018,1998-06-18,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,1000080,Diagnosis
+000019,,,,,Diagnosis
+000020,2018-12-12,http://snomed.info/id/770414008,Alport syndrome,1000088,Diagnosis
+000021,,,,,Diagnosis
+000022,,,,,Diagnosis
+000023,1991-03-14,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,1000099,Diagnosis
+000024,,,,,Diagnosis
+000025,,,,,Diagnosis
+000026,2025-07-11,http://snomed.info/id/74400008,Appendicitis,1000114,Diagnosis
+000027,2018-06-17,http://snomed.info/id/770414008,Alport syndrome,1000119,Diagnosis
+000028,,,,,Diagnosis
+000029,,,,,Diagnosis
+000030,2025-12-15,http://snomed.info/id/35455006,Acute tubular necrosis,1000131,Diagnosis
+000031,,,,,Diagnosis
+000032,,,,,Diagnosis
+000033,2025-12-15,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,1000143,Diagnosis
+000034,2025-12-15,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,1000148,Diagnosis
+000035,2022-09-26,http://snomed.info/id/770414008,Alport syndrome,1000153,Diagnosis
+000036,2025-12-15,http://snomed.info/id/37183000,"Cystinuria, type 1",1000158,Diagnosis
+000037,,,,,Diagnosis
+000038,2022-04-22,http://snomed.info/id/37183000,"Cystinuria, type 1",1000167,Diagnosis
+000039,2025-12-15,http://snomed.info/id/907460000,Polycystic kidney disease,1000173,Diagnosis
+000040,2025-12-15,http://snomed.info/id/770414008,Alport syndrome,1000178,Diagnosis
+000041,,,,,Diagnosis
+000042,,,,,Diagnosis
+000043,2025-12-15,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,1000191,Diagnosis
+000044,2025-12-15,http://snomed.info/id/37183000,"Cystinuria, type 1",1000195,Diagnosis
+000045,,,,,Diagnosis
+000046,2025-12-15,http://snomed.info/id/35455006,Acute tubular necrosis,1000204,Diagnosis
+000047,1994-08-13,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,1000209,Diagnosis
+000048,,,,,Diagnosis
+000049,,,,,Diagnosis
+000050,2008-08-29,http://snomed.info/id/35455006,Acute tubular necrosis,1000223,Diagnosis
+000051,,,,,Diagnosis
+000052,2025-12-15,http://snomed.info/id/74400008,Appendicitis,1000233,Diagnosis
+000053,,,,,Diagnosis
+000054,2007-11-04,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,1000241,Diagnosis
+000055,2025-12-15,http://snomed.info/id/770414008,Alport syndrome,1000246,Diagnosis
+000056,2011-03-12,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,1000252,Diagnosis
+000057,2024-12-10,http://snomed.info/id/770414008,Alport syndrome,1000257,Diagnosis
+000058,2024-04-19,http://snomed.info/id/37183000,"Cystinuria, type 1",1000263,Diagnosis
+000059,2025-12-15,http://snomed.info/id/37183000,"Cystinuria, type 1",1000268,Diagnosis
+000060,1984-07-27,http://snomed.info/id/37183000,"Cystinuria, type 1",1000273,Diagnosis
+000061,,,,,Diagnosis
+000062,2009-03-31,http://snomed.info/id/907460000,Polycystic kidney disease,1000281,Diagnosis
+000063,,,,,Diagnosis
+000064,,,,,Diagnosis
+000065,,,,,Diagnosis
+000066,,,,,Diagnosis
+000067,2023-03-21,http://snomed.info/id/37183000,"Cystinuria, type 1",1000300,Diagnosis
+000068,2025-12-15,http://snomed.info/id/907460000,Polycystic kidney disease,1000305,Diagnosis
+000069,,,,,Diagnosis
+000070,,,,,Diagnosis
+000071,2022-05-27,http://snomed.info/id/74400008,Appendicitis,1000317,Diagnosis
+000072,1993-06-21,http://snomed.info/id/35455006,Acute tubular necrosis,1000322,Diagnosis
+000073,,,,,Diagnosis
+000074,,,,,Diagnosis
+000075,2025-01-30,http://snomed.info/id/37183000,"Cystinuria, type 1",1000334,Diagnosis
+000076,,,,,Diagnosis
+000077,,,,,Diagnosis
+000078,2022-03-03,http://snomed.info/id/770414008,Alport syndrome,1000347,Diagnosis
+000079,,,,,Diagnosis
+000080,,,,,Diagnosis
+000081,2025-12-15,http://snomed.info/id/770414008,Alport syndrome,1000361,Diagnosis
+000082,2024-04-06,http://snomed.info/id/74400008,Appendicitis,1000366,Diagnosis
+000083,2025-12-15,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,1000371,Diagnosis
+000084,2025-12-15,http://snomed.info/id/473392002,Hypertensive nephrosclerosis,1000378,Diagnosis
+000085,,,,,Diagnosis
+000086,2025-12-15,http://snomed.info/id/770414008,Alport syndrome,1000387,Diagnosis
+000087,2020-06-23,http://snomed.info/id/770414008,Alport syndrome,1000391,Diagnosis
+000088,,,,,Diagnosis
+000089,2025-12-15,http://snomed.info/id/770414008,Alport syndrome,1000399,Diagnosis
+000090,,,,,Diagnosis
+000091,2022-11-12,http://snomed.info/id/907460000,Polycystic kidney disease,1000408,Diagnosis
+000092,,,,,Diagnosis
+000093,,,,,Diagnosis
+000094,2025-12-15,http://snomed.info/id/37183000,"Cystinuria, type 1",1000421,Diagnosis
+000095,1974-11-16,http://snomed.info/id/37183000,"Cystinuria, type 1",1000426,Diagnosis
+000096,2025-12-15,http://snomed.info/id/907460000,Polycystic kidney disease,1000432,Diagnosis
+000097,2022-10-26,http://snomed.info/id/770414008,Alport syndrome,1000438,Diagnosis
+000098,,,,,Diagnosis
+000099,2014-08-11,http://snomed.info/id/37183000,"Cystinuria, type 1",1000447,Diagnosis
+000100,2025-12-15,http://snomed.info/id/37183000,"Cystinuria, type 1",1000451,Diagnosis

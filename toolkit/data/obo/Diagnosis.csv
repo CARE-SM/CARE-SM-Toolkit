@@ -33,7 +33,7 @@ Diagnosis,50012019,xsd:string,2021-05-17,2021-05-17,9125545233,http://www.orpha.
 Diagnosis,50012019,xsd:string,2021-05-17,2021-05-17,9125545233,http://www.orpha.net/ORDO/Orphanet_93591
 Diagnosis,50012020,xsd:string,2009-09-30,2009-09-30,9125545234,http://www.orpha.net/ORDO/Orphanet_79282
 Diagnosis,50012020,xsd:string,2009-09-30,2009-09-30,9125545234,http://www.orpha.net/ORDO/Orphanet_214
-Diagnosis,50012022,xsd:string,2011-05-05,2011-05-05,9125545236,http://www.orpha.net/ORDO/Orphanet_79282
+Diagnosis,50012022,xsd:string,2011-05-05,2011-05-05,9125545236,//www.orpha.net/ORDO/Orphanet_79282
 Diagnosis,50012022,xsd:string,2011-05-05,2011-05-05,9125545236,http://www.orpha.net/ORDO/Orphanet_534
 Diagnosis,50012024,xsd:string,2008-03-09,2008-03-09,9125545238,http://www.orpha.net/ORDO/Orphanet_79282
 Diagnosis,50012024,xsd:string,2008-03-09,2008-03-09,9125545238,http://www.orpha.net/ORDO/Orphanet_730
@@ -143,3 +143,4 @@ Diagnosis,50012099,xsd:string,2010-05-14,2010-05-14,9125545313,http://www.orpha.
 Diagnosis,50012099,xsd:string,2010-05-14,2010-05-14,9125545313,http://www.orpha.net/ORDO/Orphanet_839
 Diagnosis,50012100,xsd:string,2013-08-15,2013-08-15,9125545314,http://www.orpha.net/ORDO/Orphanet_79282
 Diagnosis,50012100,xsd:string,2013-08-15,2013-08-15,9125545314,http://www.orpha.net/ORDO/Orphanet_93591
+Diagnosis,50012100,xsd:string,2013-08-15,,,

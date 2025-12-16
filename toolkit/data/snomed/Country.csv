@@ -1,0 +1,101 @@
+pid,valueIRI,value,model
+000001,http://snomed.info/id/223370001,Brazil,Country
+000002,http://snomed.info/id/223366009,Germany,Country
+000003,http://snomed.info/id/223371002,Mexico,Country
+000004,http://snomed.info/id/223366009,Germany,Country
+000005,http://snomed.info/id/223371002,Mexico,Country
+000006,http://snomed.info/id/223370001,Brazil,Country
+000007,http://snomed.info/id/223374005,China,Country
+000008,http://snomed.info/id/223369002,Spain,Country
+000009,http://snomed.info/id/223374005,China,Country
+000010,http://snomed.info/id/223369002,Spain,Country
+000011,http://snomed.info/id/223368005,France,Country
+000012,http://snomed.info/id/223374005,China,Country
+000013,http://snomed.info/id/223374005,China,Country
+000014,http://snomed.info/id/223368005,France,Country
+000015,http://snomed.info/id/223370001,Brazil,Country
+000016,http://snomed.info/id/22335008,United States of America,Country
+000017,http://snomed.info/id/223374005,China,Country
+000018,http://snomed.info/id/22335008,United States of America,Country
+000019,http://snomed.info/id/223372009,India,Country
+000020,http://snomed.info/id/223370001,Brazil,Country
+000021,http://snomed.info/id/223372009,India,Country
+000022,http://snomed.info/id/223369002,Spain,Country
+000023,http://snomed.info/id/223367000,United Kingdom,Country
+000024,http://snomed.info/id/223373004,Nigeria,Country
+000025,http://snomed.info/id/223366009,Germany,Country
+000026,http://snomed.info/id/223370001,Brazil,Country
+000027,http://snomed.info/id/223369002,Spain,Country
+000028,http://snomed.info/id/223371002,Mexico,Country
+000029,http://snomed.info/id/223366009,Germany,Country
+000030,http://snomed.info/id/22335008,United States of America,Country
+000031,http://snomed.info/id/223373004,Nigeria,Country
+000032,http://snomed.info/id/223366009,Germany,Country
+000033,http://snomed.info/id/223367000,United Kingdom,Country
+000034,http://snomed.info/id/223370001,Brazil,Country
+000035,http://snomed.info/id/223372009,India,Country
+000036,http://snomed.info/id/223367000,United Kingdom,Country
+000037,http://snomed.info/id/223366009,Germany,Country
+000038,http://snomed.info/id/223368005,France,Country
+000039,http://snomed.info/id/223368005,France,Country
+000040,http://snomed.info/id/223369002,Spain,Country
+000041,http://snomed.info/id/223374005,China,Country
+000042,http://snomed.info/id/223371002,Mexico,Country
+000043,http://snomed.info/id/223366009,Germany,Country
+000044,http://snomed.info/id/223373004,Nigeria,Country
+000045,http://snomed.info/id/22335008,United States of America,Country
+000046,http://snomed.info/id/223371002,Mexico,Country
+000047,http://snomed.info/id/223374005,China,Country
+000048,http://snomed.info/id/223368005,France,Country
+000049,http://snomed.info/id/223367000,United Kingdom,Country
+000050,http://snomed.info/id/223370001,Brazil,Country
+000051,http://snomed.info/id/223372009,India,Country
+000052,http://snomed.info/id/223370001,Brazil,Country
+000053,http://snomed.info/id/223373004,Nigeria,Country
+000054,http://snomed.info/id/223372009,India,Country
+000055,http://snomed.info/id/223373004,Nigeria,Country
+000056,http://snomed.info/id/223366009,Germany,Country
+000057,http://snomed.info/id/223373004,Nigeria,Country
+000058,http://snomed.info/id/223366009,Germany,Country
+000059,http://snomed.info/id/223368005,France,Country
+000060,http://snomed.info/id/22335008,United States of America,Country
+000061,http://snomed.info/id/223371002,Mexico,Country
+000062,http://snomed.info/id/223367000,United Kingdom,Country
+000063,http://snomed.info/id/223370001,Brazil,Country
+000064,http://snomed.info/id/223369002,Spain,Country
+000065,http://snomed.info/id/223373004,Nigeria,Country
+000066,http://snomed.info/id/223370001,Brazil,Country
+000067,http://snomed.info/id/223368005,France,Country
+000068,http://snomed.info/id/223370001,Brazil,Country
+000069,http://snomed.info/id/223368005,France,Country
+000070,http://snomed.info/id/223371002,Mexico,Country
+000071,http://snomed.info/id/223369002,Spain,Country
+000072,http://snomed.info/id/223374005,China,Country
+000073,http://snomed.info/id/223366009,Germany,Country
+000074,http://snomed.info/id/223370001,Brazil,Country
+000075,http://snomed.info/id/223372009,India,Country
+000076,http://snomed.info/id/223373004,Nigeria,Country
+000077,http://snomed.info/id/223373004,Nigeria,Country
+000078,http://snomed.info/id/223369002,Spain,Country
+000079,http://snomed.info/id/223371002,Mexico,Country
+000080,http://snomed.info/id/22335008,United States of America,Country
+000081,http://snomed.info/id/223372009,India,Country
+000082,http://snomed.info/id/223374005,China,Country
+000083,http://snomed.info/id/223367000,United Kingdom,Country
+000084,http://snomed.info/id/223371002,Mexico,Country
+000085,http://snomed.info/id/223372009,India,Country
+000086,http://snomed.info/id/223366009,Germany,Country
+000087,http://snomed.info/id/223371002,Mexico,Country
+000088,http://snomed.info/id/22335008,United States of America,Country
+000089,http://snomed.info/id/223372009,India,Country
+000090,http://snomed.info/id/223371002,Mexico,Country
+000091,http://snomed.info/id/223371002,Mexico,Country
+000092,http://snomed.info/id/223368005,France,Country
+000093,http://snomed.info/id/223371002,Mexico,Country
+000094,http://snomed.info/id/223372009,India,Country
+000095,http://snomed.info/id/223373004,Nigeria,Country
+000096,http://snomed.info/id/223366009,Germany,Country
+000097,http://snomed.info/id/223367000,United Kingdom,Country
+000098,http://snomed.info/id/223369002,Spain,Country
+000099,http://snomed.info/id/223368005,France,Country
+000100,http://snomed.info/id/223371002,Mexico,Country
