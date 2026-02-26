@@ -5,3 +5,5 @@ from toolkit.main import Toolkit
 
 toolkit_obo = Toolkit()
 toolkit_obo.whole_method(folder_path="toolkit/data/obo/", template_type="OBO") ## SNOMED or OBO
+
+

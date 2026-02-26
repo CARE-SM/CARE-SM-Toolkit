@@ -7,13 +7,27 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
+
+app = FastAPI(
+    title="CARE-SM Toolkit",
+    description="Toolkit for data transformation using CARE-SM",
+    version="1.1.0"
+)
+
 folder = Path(__file__).resolve().parent.parent / "data"
 
 @app.get("/")
 async def api_running():
-    return {'API-status': 'running'}
+    return {
+        "status": "ok",
+        "message": "API is running. See /docs for interactive documentation.",
+    }
+@app.head(
+    "/", summary="Health check (HEAD)", description="HEAD health check",)
+async def health_check_head():
+    return
 
-@app.post("/toolkit", status_code=status.HTTP_200_OK)
+@app.post("/toolkit", summary="Perform the transformation and validation from CSV-glossary-based data into a unified CSV prepared for RDF serialization using YARRRML.", status_code=status.HTTP_200_OK)
 async def csv_transformation_by_caresm_toolkit():
     toolkit_instance = Toolkit()
 
@@ -27,7 +41,7 @@ async def csv_transformation_by_caresm_toolkit():
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     
-@app.post("/CSV2OBO", status_code=status.HTTP_200_OK)
+@app.post("/CSV2OBO",summary="Perform the transformation and validation from CSV-glossary-based data into a unified CSV prepared for RDF serialization using YARRRML.", status_code=status.HTTP_200_OK)
 async def csv_transformation_by_caresm_toolkit():
     toolkit_instance = Toolkit()
 
@@ -41,7 +55,7 @@ async def csv_transformation_by_caresm_toolkit():
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
     
-@app.post("/CSV2SNOMED", status_code=status.HTTP_200_OK)
+@app.post("/CSV2SNOMED",summary="Perform the transformation and validation from CSV-glossary-based data into a unified CSV prepared for RDF serialization using YARRRML.", status_code=status.HTTP_200_OK)
 async def csv_transformation_by_caresm_toolkit():
     toolkit_instance = Toolkit()
 

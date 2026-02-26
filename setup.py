@@ -5,7 +5,7 @@ with open("requirements.txt") as f:
 
 setup(
     name="care_sm_toolkit",
-    version="1.1",
+    version="1.3",
     packages=find_packages(exclude=["toolkit.API", "toolkit.API.*"]),
     author="Pablo Alarcón Moreno",
     author_email="pabloalarconmoreno@gmail.com",

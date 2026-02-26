@@ -1,0 +1,2 @@
+model,pid,value_datatype,startdate,enddate,event_id,value,specification
+Disability,50012001,xsd:integer,2011-03-25,2011-03-35,22225154,2,http://purl.obolibrary.org/obo/NCIT_C130325

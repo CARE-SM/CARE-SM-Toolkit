@@ -28,7 +28,8 @@ class Toolkit:
     columns = [
         "model", "pid", "event_id", "value", "age", "value_datatype", "valueIRI", "activity",
         "unit", "input", "target", "protocol_id", "specification", "frequency_type",
-        "frequency_value", "agent", "startdate", "enddate", "comments", "organisation"
+        "frequency_value", "agent", "startdate", "enddate", "comments", "organisation",
+        "duration_value","duration_startdate","duration_enddate"
     ]
 
     drop_columns = ["value", "valueIRI", "target", "agent", "input", "activity", "unit"]
